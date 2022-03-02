@@ -8,16 +8,17 @@ export default function Navbar() {
 
 	return (
 		<nav>
-			<Link to='/'>
-				<button>Home</button>
-			</Link>
+			
 			{isLoggedIn ?
 				(
 					<>
 						<Link to='/projects'>
 							<button>Projects</button>
 						</Link>
-						<button onClick={logoutUser}>Logout</button>
+							<button onClick={logoutUser}>Logout</button>
+						<Link to='/'>
+							<button>Home</button>
+						</Link>
 					</>
 				) : (
 					<>

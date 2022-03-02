@@ -36,8 +36,20 @@ router.post('/signup', (req, res, next) => {
 			return User.create({ email, password: hashedPassword, name })
 				.then(createdUser => {
 					const { email, name, _id } = createdUser
-					const user = { email, name, _id }
-					res.status(201).json({ user: user })
+					const payload = { email, name, _id }
+					//res.status(201).json({ user: user })
+
+					//const { _id, email, name } = foundUser
+					//const payload = { _id, email, name }
+					
+					// create the json web token
+					const authToken = jwt.sign(
+					payload,
+					process.env.JWT_SECRET,
+					{ algorithm: 'HS256', expiresIn: '12h' }
+				)
+				res.status(201).json({ user: payload, authToken })
+					
 				})
 				.catch(err => {
 					console.log(err)

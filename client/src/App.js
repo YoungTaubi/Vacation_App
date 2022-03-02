@@ -10,12 +10,14 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <div className="App">
-      {/* <Navbar /> */}
-      <Routes>
-        <Route path='/' element={<Home />} />
-
-        
-
+      <Navbar />
+      <Routes>        
+          <Route path='/' element={
+          <ProtectedRoute redirectTo='/login'>
+            <Home />
+          </ProtectedRoute> 
+          }
+          />           
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
       </Routes>

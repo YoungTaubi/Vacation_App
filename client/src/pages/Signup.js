@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { AuthContext } from '../context/auth'
 
 export default function Signup() {
 
@@ -10,13 +11,19 @@ export default function Signup() {
 
 	const navigate = useNavigate()
 
+	const { loginUser } = useContext(AuthContext)
+
 	const handleSubmit = e => {
 		e.preventDefault()
 		const requestBody = { email, password, name }
 		axios.post('/api/auth/signup', requestBody)
 			.then(response => {
-				// redirect to login
-				navigate('/login')
+				console.log('i have a token mothafukkas')
+				const token = response.data.authToken
+				// store the token
+				loginUser(token)
+				// redirect to home
+				navigate('/')
 			})
 			.catch(err => {
 				const errorDescription = err.response.data.message
