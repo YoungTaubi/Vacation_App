@@ -15,20 +15,36 @@ router.get('/users', (req, res, next) => {
 // get all the trips which are eather owned or joined by user
 router.get('/', (req, res, next) => {
   const userId = req.payload._id
-  Trip.find({ owner: userId })
+  Trip.find({ $or: [{owner: userId}, {participants: userId}] })
     .then(trips => {
       res.status(200).json(trips)
     })
 });
 
+// get all the participants of the trip
+router.get('/:id/trip-participants', (req, res , next) => {
+  const tripId = req.params.id
+  //console.log('trip id: ',tripId)
+  Trip.findById(tripId)
+    .then(trip => {
+      User.find({_id: {$in: trip.participants}})
+        .then(user => {
+        //console.log('users: ',user);
+        res.status(200).json(user)
+      })
+    })  
+});
+
 // create a trip
 router.post('/', (req, res, next) => {
+ // console.log('trip body: ',req.body);
   const { title, description, participants } = req.body
   const userId = req.payload._id
   Trip.create({ title, description, participants, owner: userId })  
     .then(trip => {
-      console.log('participants: ', participants);
-      console.log('user: ',userId);
+      //console.log('participants: ', participants);
+      //console.log('user: ',userId);
+      //console.log('trip: ',trip);
       res.status(201).json(trip)
     })
     .catch(err => next(err))

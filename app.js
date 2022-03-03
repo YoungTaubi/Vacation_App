@@ -21,6 +21,9 @@ const { isAuthenticated } = require('./middleware/jwt')
 const trips = require("./routes/trips");
 app.use("/api/trips", isAuthenticated, trips);
 
+const expences = require("./routes/expences");
+app.use("/api/expences", isAuthenticated, expences);
+
 const auth = require("./routes/auth");
 app.use("/api/auth", auth);
 

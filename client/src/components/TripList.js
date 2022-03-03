@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { Link } from 'react-router-dom'
 
 
 export default function TripList() {
@@ -31,7 +32,11 @@ export default function TripList() {
 	return (
 		<>
 			<h1>All your Trips</h1>
-			{trips.map(trip => <h1>{trip.title}</h1>)}
+			<ul>
+			{trips.map(trip => 
+            <li><Link to={`/${trip._id}`}>{trip.title}</Link></li>
+            )}
+			</ul>
 			
 		</>
 	)
