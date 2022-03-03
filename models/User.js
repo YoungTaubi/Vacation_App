@@ -8,7 +8,17 @@ const userSchema = new Schema(
       // unique: true -> Ideally, should be unique, but its up to you
     },
     password: String,
-    email: String
+    email: String,
+    imageUrl: {
+      type: String,
+      // default: '/images/profile_default.jpeg',
+    },
+    trips: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Trip',
+      },
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

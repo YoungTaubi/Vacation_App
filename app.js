@@ -18,8 +18,8 @@ const { isAuthenticated } = require('./middleware/jwt')
 
 // 👇 Start handling routes here
 // Contrary to the views version, all routes are controlled from the routes/index.js
-// const projects = require("./routes/projects");
-// app.use("/api/projects", isAuthenticated, projects);
+const trips = require("./routes/trips");
+app.use("/api/trips", isAuthenticated, trips);
 
 const auth = require("./routes/auth");
 app.use("/api/auth", auth);

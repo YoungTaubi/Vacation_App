@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom'
 export default function ProtectedRoute({ children, redirectTo }) {
 
 	const { isLoggedIn, isLoading } = useContext(AuthContext)
-
+	console.log(isLoggedIn);
 	if (isLoading) return <p>Is loading...</p>
-	return isLoggedIn ? children : <Navigate to={redirectTo} />
+	return isLoggedIn ? children : <Navigate to='/login' replace />
 }

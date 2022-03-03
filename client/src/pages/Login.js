@@ -21,7 +21,7 @@ export default function Login() {
 				// redirect to projects
 				console.log('i have a token mothafukkas')
 				const token = response.data.authToken
-				console.log(response);
+				//console.log(response);
 				// store the token
 				loginUser(token)
 				// redirect to projects

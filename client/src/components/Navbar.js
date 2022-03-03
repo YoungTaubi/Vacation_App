@@ -12,12 +12,18 @@ export default function Navbar() {
 			{isLoggedIn ?
 				(
 					<>
-						<Link to='/projects'>
-							<button>Projects</button>
+						<Link to='/account'>
+							<button>Your Account</button>
 						</Link>
 							<button onClick={logoutUser}>Logout</button>
 						<Link to='/'>
 							<button>Home</button>
+						</Link>
+						<Link to='/your-trips'>
+							<button>Your Trips</button>
+						</Link>
+						<Link to='/add-trip'>
+							<button>Add new trip</button>
 						</Link>
 					</>
 				) : (
