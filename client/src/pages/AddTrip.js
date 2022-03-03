@@ -42,6 +42,9 @@ export default function AddTrip(props) {
 		getAllUsers()
 	}, [])
 
+	// test
+	// test2
+
 	return (
 		<>
 			<h1>Add new Trip</h1>
