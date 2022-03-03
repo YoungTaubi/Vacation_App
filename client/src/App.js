@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Account from './pages/Account';
 import YourTrips from './pages/YourTrips';
 import AddTrip from './pages/AddTrip';
+import Trip from './pages/Trip';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/account' element={<Account />} />
         <Route path='/your-trips' element={<YourTrips />} />
         <Route path='/add-trip' element={<AddTrip />} />
+        <Route path='/:id' element={<Trip />} />
       </Routes>
     </div>
   );

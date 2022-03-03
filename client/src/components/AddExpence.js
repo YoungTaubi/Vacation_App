@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-
-export default function AddTrip(props) {
+export default function AddExpence(props) {
 
 	const [title, setTitle] = useState('');
-	const [description, setDescription] = useState('');
-	const [participants, setParticipants] = useState([])
-	const [allUsers, setAllUsers] = useState([])
+	const [amount, setAmount] = useState('');
+    const [debitors, setDebitors] = useState('');
+	const [tripParticipants, setTripParticipants] = useState([]);
 
 	const storedToken = localStorage.getItem('authToken')
+    const { id } = useParams()
 
-	const getAllUsers = () => {
-		axios.get('/api/trips/users', { headers: { Authorization: `Bearer ${storedToken}` } })
+	const getAllTripParticipants = () => {
+		axios.get(`/api/trips/${id}/trip-participants`, { headers: { Authorization: `Bearer ${storedToken}` } })
 		.then(res => {
-			//console.log('users: ', res.data);
-			setAllUsers(res.data)
+			console.log('trip-participants: ', res.data);
+			setTripParticipants(res.data)
 		})
 		.catch(err => {
 			console.log(err)
@@ -26,15 +27,15 @@ export default function AddTrip(props) {
 		e.preventDefault()
 		// send the data from the state as a post request to 
 		// the backend
-		axios.post('/api/trips', { title, description, participants }, { headers: { Authorization: `Bearer ${storedToken}` } })
+		axios.post(`/api/expences/${id}`, { title, amount, debitors }, { headers: { Authorization: `Bearer ${storedToken}` } })
 			.then(response => {
-				//console.log(response)
+				console.log(response)
 			})
 			.catch(err => console.log(err))
 		// reset the form
 		setTitle('')
-		setDescription('')
-		setParticipants([])
+		setAmount('')
+		setDebitors([])
 		// refresh the list of the trips in ProjectList
 		//props.refreshTrips()
 	}
@@ -48,17 +49,17 @@ export default function AddTrip(props) {
 		  }		  
 		}
 		//console.log('value: ', value);
-		setParticipants(value);
+		setDebitors(value);
 	  }
 
 	useEffect(() => {
-		getAllUsers()
+		getAllTripParticipants()
 	}, [])
 
 
 	return (
 		<>
-			<h1>Add new Trip</h1>
+			<h1>Add new Expence</h1>
 			<form onSubmit={handleSubmit}>
 				<label htmlFor="title">Title: </label>
 				<input
@@ -69,20 +70,20 @@ export default function AddTrip(props) {
 				/>
 				<label htmlFor="title">Description: </label>
 				<input
-					id="description"
-					type="text"
-					value={description}
-					onChange={e => setDescription(e.target.value)}
+					id="amount"
+					type="number"
+					value={amount}
+					onChange={e => setAmount(e.target.value)}
 				/>
-				<label htmlFor="participants">Participants: </label>
-				<select type='checkbox' name="participants" multiple
+				<label htmlFor="debitors">Who is paining? </label>
+				<select type='checkbox' name="debitors" multiple
 				onChange={handleChange}>
-					{allUsers.map(user => 
+					{tripParticipants.map(user => 
 					
 					<option value={user._id}>{user.name}</option>
 					)}
 				</select>
-				<button type="submit">Add this Trip</button>
+				<button type="submit">Add this Expence</button>
 			</form>
 			
 			
