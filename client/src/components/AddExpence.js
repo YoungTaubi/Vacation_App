@@ -68,7 +68,7 @@ export default function AddExpence(props) {
 					value={title}
 					onChange={e => setTitle(e.target.value)}
 				/>
-				<label htmlFor="title">Description: </label>
+				<label htmlFor="title">Amout: </label>
 				<input
 					id="amount"
 					type="number"
@@ -83,6 +83,14 @@ export default function AddExpence(props) {
 					<option value={user._id}>{user.name}</option>
 					)}
 				</select>
+				{tripParticipants.map(user =>
+					<div>
+						<h3>{user.name}</h3>
+						<input type="number" />
+
+					</div> 
+					)}
+
 				<button type="submit">Add this Expence</button>
 			</form>
 			
