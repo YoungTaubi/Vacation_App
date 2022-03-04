@@ -5,9 +5,20 @@ import { useParams } from 'react-router-dom';
 export default function AddExpence(props) {
 
 	const [title, setTitle] = useState('');
-	const [amount, setAmount] = useState('');
-    const [debitors, setDebitors] = useState('');
+	const [amount, setAmount] = useState(0);
+    const [debitors, setDebitors] = useState([]
+	// 	{
+	// 	debitorId: '',
+	// 	debitorDebt: 0
+	// }
+	);
+	console.log('debitor State: ', debitors);
+	//console.log('debitorDebt State: ', debitors.debitorDebt);
 	const [tripParticipants, setTripParticipants] = useState([]);
+	const [multiplier, setMultiplier] = useState({
+		// 0: 0
+	})
+	console.log('multiplier State:', multiplier );
 
 	const storedToken = localStorage.getItem('authToken')
     const { id } = useParams()
@@ -15,7 +26,7 @@ export default function AddExpence(props) {
 	const getAllTripParticipants = () => {
 		axios.get(`/api/trips/${id}/trip-participants`, { headers: { Authorization: `Bearer ${storedToken}` } })
 		.then(res => {
-			console.log('trip-participants: ', res.data);
+			//console.log('trip-participants: ', res.data);
 			setTripParticipants(res.data)
 		})
 		.catch(err => {
@@ -27,9 +38,11 @@ export default function AddExpence(props) {
 		e.preventDefault()
 		// send the data from the state as a post request to 
 		// the backend
-		axios.post(`/api/expences/${id}`, { title, amount, debitors }, { headers: { Authorization: `Bearer ${storedToken}` } })
+		console.log('Debitor: ', debitors);
+		axios.post(`/api/expences/${id}`, { title, amount, debitors }, { headers: { Authorization: `Bearer ${storedToken}` } })			
 			.then(response => {
-				console.log(response)
+				
+				console.log('responce: ',response.data)
 			})
 			.catch(err => console.log(err))
 		// reset the form
@@ -41,17 +54,67 @@ export default function AddExpence(props) {
 	}
 
 	const handleChange = (e) => {
-		var options = e.target.options;
-		var value = [];
+		let options = e.target.options;
+		let value = [];
+		//console.log('options: ', options);
 		for (let i = 0, l = options.length; i < l; i++) {
 		  if (options[i].selected) {
-			value.push(options[i].value);
+			value.push({debitorId: options[i].value, debitorName: options[i].innerText});
 		  }		  
 		}
 		//console.log('value: ', value);
 		setDebitors(value);
 	  }
 
+	function handleDebtChange(e, id) {
+		setMultiplier(() => ({
+			...multiplier,
+			[id]: e.target.value			
+		}))			
+		updateDebt()
+		// console.log('Debitor: ', debitors);
+	}
+	
+
+	useEffect(() => {
+		updateDebt()
+	}, [multiplier])
+
+	//console.log(Object.keys(multiplier));
+	//console.log(Object.values(multiplier));	
+
+	const updateDebt = () => {	
+		const allMultipliers = Object.entries(multiplier)	
+		let multiplierTotal = 0
+		for (let [key, value] of allMultipliers) {
+			multiplierTotal += Number(value)			
+		}
+		let procentage = amount / multiplierTotal
+		console.log('procentage', procentage );
+		//console.log('all multi: ', multiplier);
+		debitors.map((debitor) => {			
+	 		//console.log('debitor: ', debitor);
+			 for (let [key, value] of allMultipliers) {				
+				//console.log(key, value);
+				if (debitor.debitorId === key) {
+					 debitor.debitorDebt = procentage * Number(value)
+					console.log('test',debitor.debitorDebt);
+				}
+			// 	if (debitor.debitorId === key) {
+			// 		setDebitors(() => ({
+			// 			...debitors,
+			// 			debitorDebt: procentage * Number(value)
+			// 		}))
+			// 		console.log('test',debitor.debitorDebt);
+			//    }
+			
+			 }
+			 
+	 		console.log('multiplier total: ', multiplierTotal);
+	 		// console.log(Object.keys(multiplier));
+	 }	 
+	)}
+	
 	useEffect(() => {
 		getAllTripParticipants()
 	}, [])
@@ -72,21 +135,32 @@ export default function AddExpence(props) {
 				<input
 					id="amount"
 					type="number"
+					placeholder='0'
 					value={amount}
 					onChange={e => setAmount(e.target.value)}
 				/>
 				<label htmlFor="debitors">Who is paining? </label>
-				<select type='checkbox' name="debitors" multiple
+				<select type='checkbox' name="debitors.debitorId" multiple
 				onChange={handleChange}>
 					{tripParticipants.map(user => 
 					
-					<option value={user._id}>{user.name}</option>
+					<option value={user._id} >{user.name}</option>
 					)}
 				</select>
-				{tripParticipants.map(user =>
+				{debitors.map(user =>
 					<div>
-						<h3>{user.name}</h3>
-						<input type="number" />
+						<h3>{user.debitorName}</h3>
+						<h3>{user.debitorDebt}</h3>
+						<input 
+						id='debitors.debitorDebt'
+						type="number"
+						value={multiplier.pizza} 
+						placeholder='1'
+						onChange={(e) => {
+							handleDebtChange(e, user.debitorId)
+							
+							}}
+						/>
 
 					</div> 
 					)}

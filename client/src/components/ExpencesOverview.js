@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 export default function AddExpence(props) {
 
     const [usersExpences, setUsersExpences] = useState([])
-    console.log('state users expences: ',usersExpences );
+    //console.log('state users expences: ',usersExpences );
 
     const storedToken = localStorage.getItem('authToken')
     const { id } = useParams()

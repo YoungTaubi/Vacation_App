@@ -10,8 +10,19 @@ const expenceSchema = new Schema({
 	},
 	debitors: [
 		{
-			type: Schema.Types.ObjectId,
-			ref: 'User'
+			// type: Schema.Types.ObjectId,
+			// ref: 'User'
+			debitorId:
+				{
+					type: Schema.Types.ObjectId,
+					ref: 'User'
+				},
+			debitorName:
+			{
+				type: String,
+				ref: 'User'
+			},
+			debitorDebt: Number
 		}
 	]
 });
