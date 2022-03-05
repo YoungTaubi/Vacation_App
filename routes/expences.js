@@ -64,4 +64,12 @@ router.get('/:id/users-expences', (req, res, next) => {
     .catch(err => next(err))
   });
 
+  // get total debt of user
+
+  router.get('/:id/users-debt', (req, res, next) => {
+
+// .catch(err => next(err))
+});
+
+
 module.exports = router;

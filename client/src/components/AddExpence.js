@@ -12,13 +12,13 @@ export default function AddExpence(props) {
 	// 	debitorDebt: 0
 	// }
 	);
-	console.log('debitor State: ', debitors);
+	//console.log('debitor State: ', debitors);
 	//console.log('debitorDebt State: ', debitors.debitorDebt);
 	const [tripParticipants, setTripParticipants] = useState([]);
 	const [multiplier, setMultiplier] = useState({
 		// 0: 0
 	})
-	console.log('multiplier State:', multiplier );
+	//console.log('multiplier State:', multiplier );
 
 	const storedToken = localStorage.getItem('authToken')
     const { id } = useParams()
@@ -38,11 +38,11 @@ export default function AddExpence(props) {
 		e.preventDefault()
 		// send the data from the state as a post request to 
 		// the backend
-		console.log('Debitor: ', debitors);
+		//console.log('Debitor: ', debitors);
 		axios.post(`/api/expences/${id}`, { title, amount, debitors }, { headers: { Authorization: `Bearer ${storedToken}` } })			
 			.then(response => {
 				
-				console.log('responce: ',response.data)
+				//console.log('responce: ',response.data)
 			})
 			.catch(err => console.log(err))
 		// reset the form
@@ -50,7 +50,7 @@ export default function AddExpence(props) {
 		setAmount('')
 		setDebitors([])
 		// refresh the list of the trips in ProjectList
-		//props.refreshTrips()
+		props.refreshAllExpencesFromUser()
 	}
 
 	const handleChange = (e) => {
@@ -59,7 +59,7 @@ export default function AddExpence(props) {
 		//console.log('options: ', options);
 		for (let i = 0, l = options.length; i < l; i++) {
 		  if (options[i].selected) {
-			console.log(options[i].value);
+			//console.log(options[i].value);
 			setInitialMultiplier(options[i].value)
 			value.push({debitorId: options[i].value, debitorName: options[i].innerText});
 			}		  
@@ -100,7 +100,7 @@ export default function AddExpence(props) {
 			multiplierTotal += Number(value)			
 		}
 		let procentage = amount / multiplierTotal
-		console.log('procentage', procentage );
+		//console.log('procentage', procentage );
 		//console.log('all multi: ', multiplier);
 		debitors.map((debitor) => {	
 					
@@ -110,7 +110,7 @@ export default function AddExpence(props) {
 				if (debitor.debitorId === key) {
 					let result = procentage * Number(value)
 					debitor.debitorDebt = procentage * Number(value)
-					console.log('debitors debt: ',debitor.debitorDebt);
+					//console.log('debitors debt: ',debitor.debitorDebt);
 					debitorsUpd.push({...debitor, debitorDebt: result})
 					// (...debitor, {debitorDebt: [result]})
 				}
@@ -126,8 +126,8 @@ export default function AddExpence(props) {
 			 }
 			 
 			 
-	 		console.log('multiplier total: ', multiplierTotal);
-			 console.log('array', debitorsUpd);
+	 		//console.log('multiplier total: ', multiplierTotal);
+			//console.log('array', debitorsUpd);
 	 		// console.log(Object.keys(multiplier));
 			setDebitors(debitorsUpd)
 	 }	 
@@ -137,7 +137,7 @@ export default function AddExpence(props) {
 	const handleAmountChanage = (e) => {
 		setAmount(e.target.value)
 		updateDebt()
-		console.log('debitors debt: ',debitors)
+		// console.log('debitors debt: ',debitors)
 		
 	}
 
