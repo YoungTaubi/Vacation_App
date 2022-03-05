@@ -16,18 +16,33 @@ function App() {
     <div className="App">
       <Navbar />
       <Routes>        
-          <Route path='/' element={
-          <ProtectedRoute redirectTo='/login'>
-            <Home />
-          </ProtectedRoute> 
-          }
-          />           
+        <Route path='/' element={
+        <ProtectedRoute redirectTo='/login'>
+          <Home />
+        </ProtectedRoute> 
+        }/>           
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/account' element={<Account />} />
-        <Route path='/your-trips' element={<YourTrips />} />
-        <Route path='/add-trip' element={<AddTrip />} />
-        <Route path='/:id' element={<Trip />} />
+        <Route path='/account' element={
+        <ProtectedRoute redirectTo='/login'> 
+          <Account />
+        </ProtectedRoute>
+        } />
+        <Route path='/your-trips' element={
+        <ProtectedRoute redirectTo='/login'>
+          <YourTrips />
+        </ProtectedRoute>
+        } />
+        <Route path='/add-trip' element={
+        <ProtectedRoute redirectTo='/login'>
+          <AddTrip />
+        </ProtectedRoute>
+        } />
+        <Route path='/:id' element={
+        <ProtectedRoute redirectTo='/login'>
+          <Trip />
+        </ProtectedRoute>
+        } />
       </Routes>
     </div>
   );
