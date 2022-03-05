@@ -9,10 +9,9 @@ function AuthProviderWrapper(props) {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 
-	const loginUser = token => {
+	const storeToken = token => {
 		// store this token in local storage
-		localStorage.setItem('authToken', token)
-		verifyStoredToken()
+		localStorage.setItem('authToken', token)		
 	}
 
 	const logoutUser = () => {
@@ -27,7 +26,7 @@ function AuthProviderWrapper(props) {
 		// check local storage
 		const storedToken = localStorage.getItem('authToken')
 		if (storedToken) {
-			axios.get('/api/auth/verify', { headers: { Authorization: `Bearer ${storedToken}` } })
+			return axios.get('/api/auth/verify', { headers: { Authorization: `Bearer ${storedToken}` } })
 				.then(response => {
 					const user = response.data
 					setUser(user)
@@ -52,7 +51,7 @@ function AuthProviderWrapper(props) {
 	}, [])
 
 	return (
-		<AuthContext.Provider value={{ isLoggedIn, user, isLoading, loginUser, logoutUser }}>
+		<AuthContext.Provider value={{ isLoggedIn, user, isLoading, storeToken, verifyStoredToken, logoutUser }}>
 			{props.children}
 		</AuthContext.Provider>
 	)

@@ -59,12 +59,21 @@ export default function AddExpence(props) {
 		//console.log('options: ', options);
 		for (let i = 0, l = options.length; i < l; i++) {
 		  if (options[i].selected) {
+			console.log(options[i].value);
+			setInitialMultiplier(options[i].value)
 			value.push({debitorId: options[i].value, debitorName: options[i].innerText});
-		  }		  
+			}		  
 		}
 		//console.log('value: ', value);
 		setDebitors(value);
-	  }
+	}
+
+	function setInitialMultiplier(id) {
+		setMultiplier(() => ({
+			...multiplier,
+			[id]: 1		
+		}))
+	}
 
 	function handleDebtChange(e, id) {
 		setMultiplier(() => ({
@@ -78,7 +87,7 @@ export default function AddExpence(props) {
 
 	useEffect(() => {
 		updateDebt()
-	}, [multiplier])
+	}, [multiplier, amount])
 
 	//console.log(Object.keys(multiplier));
 	//console.log(Object.values(multiplier));	
@@ -86,20 +95,26 @@ export default function AddExpence(props) {
 	const updateDebt = () => {	
 		const allMultipliers = Object.entries(multiplier)	
 		let multiplierTotal = 0
+		const debitorsUpd = []
 		for (let [key, value] of allMultipliers) {
 			multiplierTotal += Number(value)			
 		}
 		let procentage = amount / multiplierTotal
 		console.log('procentage', procentage );
 		//console.log('all multi: ', multiplier);
-		debitors.map((debitor) => {			
+		debitors.map((debitor) => {	
+					
 	 		//console.log('debitor: ', debitor);
 			 for (let [key, value] of allMultipliers) {				
 				//console.log(key, value);
 				if (debitor.debitorId === key) {
-					 debitor.debitorDebt = procentage * Number(value)
-					console.log('test',debitor.debitorDebt);
+					let result = procentage * Number(value)
+					debitor.debitorDebt = procentage * Number(value)
+					console.log('debitors debt: ',debitor.debitorDebt);
+					debitorsUpd.push({...debitor, debitorDebt: result})
+					// (...debitor, {debitorDebt: [result]})
 				}
+
 			// 	if (debitor.debitorId === key) {
 			// 		setDebitors(() => ({
 			// 			...debitors,
@@ -110,10 +125,27 @@ export default function AddExpence(props) {
 			
 			 }
 			 
+			 
 	 		console.log('multiplier total: ', multiplierTotal);
+			 console.log('array', debitorsUpd);
 	 		// console.log(Object.keys(multiplier));
+			setDebitors(debitorsUpd)
 	 }	 
 	)}
+
+
+	const handleAmountChanage = (e) => {
+		setAmount(e.target.value)
+		updateDebt()
+		console.log('debitors debt: ',debitors)
+		
+	}
+
+	
+
+	const test = () => {
+		return true
+	}
 	
 	useEffect(() => {
 		getAllTripParticipants()
@@ -137,7 +169,7 @@ export default function AddExpence(props) {
 					type="number"
 					placeholder='0'
 					value={amount}
-					onChange={e => setAmount(e.target.value)}
+					onChange={handleAmountChanage}
 				/>
 				<label htmlFor="debitors">Who is paining? </label>
 				<select type='checkbox' name="debitors.debitorId" multiple
@@ -150,15 +182,15 @@ export default function AddExpence(props) {
 				{debitors.map(user =>
 					<div>
 						<h3>{user.debitorName}</h3>
-						<h3>{user.debitorDebt}</h3>
+						<h3>{user.debitorDebt ? user.debitorDebt +' €' : 0 +' €'}</h3>
 						<input 
 						id='debitors.debitorDebt'
 						type="number"
-						value={multiplier.pizza} 
+						value={multiplier.key} 
 						placeholder='1'
+						min={test ? '2' : '1'}
 						onChange={(e) => {
-							handleDebtChange(e, user.debitorId)
-							
+							handleDebtChange(e, user.debitorId)							
 							}}
 						/>
 

@@ -11,7 +11,7 @@ export default function Signup() {
 
 	const navigate = useNavigate()
 
-	const { loginUser } = useContext(AuthContext)
+	const { storeToken, verifyStoredToken } = useContext(AuthContext)
 
 	const handleSubmit = e => {
 		e.preventDefault()
@@ -21,9 +21,13 @@ export default function Signup() {
 				console.log('i have a token mothafukkas')
 				const token = response.data.authToken
 				// store the token
-				loginUser(token)
-				// redirect to home
-				navigate('/')
+				storeToken(token)
+				verifyStoredToken()
+					.then(() => {
+						// redirect to home
+						navigate('/')
+					})
+				
 			})
 			.catch(err => {
 				const errorDescription = err.response.data.message
