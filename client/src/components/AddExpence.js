@@ -19,6 +19,7 @@ export default function AddExpence(props) {
 		// 0: 0
 	})
 	//console.log('multiplier State:', multiplier );
+	//console.log('tripParticipants state', tripParticipants);
 
 	const storedToken = localStorage.getItem('authToken')
     const { id } = useParams()
@@ -51,6 +52,7 @@ export default function AddExpence(props) {
 		setDebitors([])
 		// refresh the list of the trips in ProjectList
 		props.refreshAllExpencesFromUser()
+		props.refreshAllExpences()
 	}
 
 	const handleChange = (e) => {
@@ -133,6 +135,8 @@ export default function AddExpence(props) {
 	 		// console.log(Object.keys(multiplier));
 			setDebitors(debitorsUpd)
 			props.refreshAllExpencesFromUser()
+			
+			//props.getAllExpencesFromUser()
 	 }	 
 	)}
 

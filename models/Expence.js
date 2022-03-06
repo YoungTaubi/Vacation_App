@@ -8,6 +8,10 @@ const expenceSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User'
 	},
+	creditorName: {
+		type: String,
+		ref: 'User'
+	},
 	debitors: [
 		{
 			// type: Schema.Types.ObjectId,

@@ -1,6 +1,7 @@
 const Trip = require("../models/Trip");
 const User = require("../models/User");
 const Expence = require("../models/Expence");
+const { route } = require("express/lib/application");
 
 const router = require("express").Router();
 
@@ -11,25 +12,30 @@ router.post('/:id', (req, res, next) => {
     const userId = req.payload._id
     //console.log('body: ',req.body, 'user ID: ', userId);
     //console.log('tripId: ',tripId);
-    Expence.create({ title, amount, debitors, creditor: userId })  
-      .then(expence => {
-          Trip.findByIdAndUpdate(tripId, 
-            {
-                $push: {
-                    expences: expence._id
-                }
-            }
-            ).then(trip => {
-        //console.log('expence: ', expence);
-        //console.log('debitors: ',debitors);
-        //console.log('expenceId: ',expence._id);
-        //console.log('tripId: ',tripId);
-        //console.log('trip: ',trip);
-        //console.log('expence: ',expence);
-        res.status(201).json(expence)
-      })
-      .catch(err => next(err))
-    })
+    User.findById(userId)
+        .then(user => {
+            Expence.create({ title, amount, debitors, creditor: userId, creditorName: user.name })  
+                .then(expence => {
+                    Trip.findByIdAndUpdate(tripId, 
+                      {
+                          $push: {
+                              expences: expence._id
+                          }
+                      }
+                      ).then(trip => {
+                  //console.log('expence: ', expence);
+                  //console.log('debitors: ',debitors);
+                  //console.log('expenceId: ',expence._id);
+                  //console.log('tripId: ',tripId);
+                  //console.log('trip: ',trip);
+                  //console.log('expence: ',expence);
+                  res.status(201).json(expence)
+                })
+                .catch(err => next(err))
+            }) 
+            .catch(err => next(err))       
+        })
+        .catch(err => next(err))    
   })
 
 // get all expences made by the user for exp. overview
@@ -64,9 +70,7 @@ router.get('/:id/users-expences', (req, res, next) => {
                     if (String(debitor.debitorId) == userId) {                    
                         userTotalDebt += debitor.debitorDebt
                         console.log('trip total expences',totalTripExpences);
-                        console.log('user total debt',userTotalDebt);
-                    
-                        
+                        console.log('user total debt',userTotalDebt);                 
                     } 
                                  
                 })            
@@ -85,6 +89,32 @@ router.get('/:id/users-expences', (req, res, next) => {
     })
     .catch(err => next(err))
   });
+
+// get all expences of trip
+router.get('/:id/all-expences', (req, res, next) => {
+    const tripId = req.params.id
+    const userId = req.payload._id
+    // Find the current trip
+    Trip.findById(tripId)
+    .then(trip => {  
+        // Find all expences of the current trip      
+        Expence.find({_id: {$in: trip.expences}})
+        .then(expences => {
+            res.status(200).json(expences)
+        })
+        .catch(err => next(err))
+    })
+});
+
+// get user id
+router.get('/user-id', (req, res, next) => {
+    const userId = req.payload._id
+    res.status(200).json(userId)
+});
+  
+    
+
+
 
 
 module.exports = router;
