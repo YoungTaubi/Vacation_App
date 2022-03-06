@@ -7,7 +7,8 @@ import axios from 'axios';
 
 export default function Home() {
 
-    const [usersExpences, setUsersExpences] = useState([])
+    const [usersExpences, setUsersExpences] = useState(0)
+    const [usersTotalDebt, setUsersTotalDebt] = useState(0)
     console.log('state users expences: ',usersExpences );
 
     const { id } = useParams()
@@ -28,13 +29,14 @@ export default function Home() {
 
     useEffect(() => {
         getAllExpencesFromUser()
+
     }, [])
 
 
 	return (
         <>
 		<h1>This is your trip to ...</h1>
-        <AddExpence refreshAllExpencesFromUser={getAllExpencesFromUser}/>
+        <AddExpence refreshAllExpencesFromUser={getAllExpencesFromUser} />
         <ExpencesOverview allExpencesFromUser={usersExpences} />
         </>
 	)

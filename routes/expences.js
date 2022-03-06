@@ -32,44 +32,59 @@ router.post('/:id', (req, res, next) => {
     })
   })
 
-// get all expences made by the user
+// get all expences made by the user for exp. overview
 router.get('/:id/users-expences', (req, res, next) => {
     const tripId = req.params.id
-    const userId = req.payload.name
+    const userId = req.payload._id
     let userTotalSpent = 0
+    let userTotalDebt = 0
+    let userTotalCredit = 0
+    let totalTripExpences = 0
+    console.log('user total debt1',userTotalDebt);
+    // Find the current trip
     Trip.findById(tripId)
-    .then(trip => {
-        console.log('trip: ', trip);
-        console.log('trip expences: ', trip.expences);
+    .then(trip => {  
+        // Find all expences of the current trip      
         Expence.find({_id: {$in: trip.expences}})
         .populate('creditor')
-        .then(expences => {
-        
-        console.log('expences: ',expences);
-        console.log('creditor: ',expences[0].creditor.name);
-        console.log('user ID: ',userId,`new ObjectId("${userId}")`);
+        .then(expences => {        
         expences.map((expence, index) => {
-            console.log(index, expence.creditor.name)
-            // if (expence.creditor._id == `new ObjectId("${userId}")`) {
-            if (expence.creditor.name == userId) {
-                console.log(expence.amount);
+            totalTripExpences += expence.amount
+            if (String(expence.creditor._id) == userId) {
                 userTotalSpent += expence.amount
             }
         })
-        console.log('total spent: ', userTotalSpent);
-        res.status(200).json({amount:userTotalSpent})
+            Expence.find({_id: {$in: trip.expences}})
+            .populate('debitors')
+            .then(expences => {        
+            //console.log('debitors: ',expences[0]);
+            expences.map((expence) => {
+                expence.debitors.map((debitor) => {
+                    //console.log('debitor Id ', debitor.debitorId);
+                    if (String(debitor.debitorId) == userId) {                    
+                        userTotalDebt += debitor.debitorDebt
+                        console.log('trip total expences',totalTripExpences);
+                        console.log('user total debt',userTotalDebt);
+                    
+                        
+                    } 
+                                 
+                })            
+            }) 
+            if (userTotalSpent > userTotalDebt) {
+                userTotalCredit = userTotalSpent - userTotalDebt 
+                console.log('user total credit',userTotalCredit);
+            }
+            userTotalDebt -= userTotalSpent 
+            res.status(200).json({amount:userTotalSpent, userTotalDebt, userTotalCredit, totalTripExpences})       
+        })
+        .catch(err => next(err))
+        
         })
         .catch(err => next(err))
     })
     .catch(err => next(err))
   });
-
-  // get total debt of user
-
-  router.get('/:id/users-debt', (req, res, next) => {
-
-// .catch(err => next(err))
-});
 
 
 module.exports = router;
