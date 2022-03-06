@@ -66,6 +66,7 @@ export default function AddExpence(props) {
 		}
 		//console.log('value: ', value);
 		setDebitors(value);
+		// props.refreshAllExpencesFromUser()
 	}
 
 	function setInitialMultiplier(id) {
@@ -81,6 +82,7 @@ export default function AddExpence(props) {
 			[id]: e.target.value			
 		}))			
 		updateDebt()
+		//props.refreshAllExpencesFromUser()
 		// console.log('Debitor: ', debitors);
 	}
 	
@@ -130,6 +132,7 @@ export default function AddExpence(props) {
 			//console.log('array', debitorsUpd);
 	 		// console.log(Object.keys(multiplier));
 			setDebitors(debitorsUpd)
+			props.refreshAllExpencesFromUser()
 	 }	 
 	)}
 
@@ -137,6 +140,7 @@ export default function AddExpence(props) {
 	const handleAmountChanage = (e) => {
 		setAmount(e.target.value)
 		updateDebt()
+		
 		// console.log('debitors debt: ',debitors)
 		
 	}
