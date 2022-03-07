@@ -111,6 +111,16 @@ router.get('/user-id', (req, res, next) => {
     const userId = req.payload._id
     res.status(200).json(userId)
 });
+
+// delete an expence
+router.delete('/:id', (req, res, next) => {
+    Expence.findByIdAndDelete(req.params.id)
+      .then(() => {
+        res.status(200).json({ message: 'Expence deleted' })
+      })
+      .catch(err => next(err))
+  });
+  
   
     
 

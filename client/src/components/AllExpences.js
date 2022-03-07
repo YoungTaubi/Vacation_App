@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+//import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function AddExpence(props) {
@@ -9,6 +10,9 @@ export default function AddExpence(props) {
 
     console.log('props all exp.',allExpences);    
     console.log('user id:',userId);  
+
+    //const { expenceId } = useParams()
+    //const navigate = useNavigate()
 
     const storedToken = localStorage.getItem('authToken')
 
@@ -22,7 +26,16 @@ export default function AddExpence(props) {
 			console.log(err)
 		})
 	}
-    
+
+    const deleteExpence = (id) => {
+		axios.delete(`/api/expences/${id}`, { headers: { Authorization: `Bearer ${storedToken}` } })
+			.then(() => {
+                props.getAllExpences()
+			    //	// redirect to the project list
+			    //navigate(`/${expenceId}`)
+			})
+			.catch(err => console.log(err))
+	}   
     useEffect(() => {
         //props.getAllExpences()
         getUserId()
@@ -38,7 +51,7 @@ export default function AddExpence(props) {
                     <h3>Paied by: {expence.creditorName}</h3>
                     {
                         userId === expence.creditor && 
-                        <h3>Meins</h3>
+                        <button onClick={() => deleteExpence(expence._id)}>Delete this expence</button>    
                     }   
                 </div>           
             )} 
