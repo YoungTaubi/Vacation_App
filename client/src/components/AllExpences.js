@@ -31,6 +31,7 @@ export default function AddExpence(props) {
 		axios.delete(`/api/expences/${id}`, { headers: { Authorization: `Bearer ${storedToken}` } })
 			.then(() => {
                 props.getAllExpences()
+                props.refreshAllExpencesFromUser()
 			    //	// redirect to the project list
 			    //navigate(`/${expenceId}`)
 			})

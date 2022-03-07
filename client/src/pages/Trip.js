@@ -43,7 +43,7 @@ export default function Home(props) {
     useEffect(() => {
         getAllExpencesFromUser()
         getAllExpences()
-    }, [])
+    }, [id])
 
 
 
@@ -52,7 +52,7 @@ export default function Home(props) {
 		<h1>This is your trip to ...</h1>
         <AddExpence refreshAllExpencesFromUser={getAllExpencesFromUser} refreshAllExpences={getAllExpences} />
         <ExpencesOverview allExpencesFromUser={usersExpences} />
-        <AllExpences allExpencesOfTrip={allExpences} getAllExpences={getAllExpences} />
+        <AllExpences allExpencesOfTrip={allExpences} getAllExpences={getAllExpences} refreshAllExpencesFromUser={getAllExpencesFromUser}/>
         </>
 	)
 }

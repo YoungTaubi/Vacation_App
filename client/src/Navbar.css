@@ -1,0 +1,36 @@
+.navbar {
+    padding: 30px 0 0 50px;
+    margin: 0;
+    background-color: aquamarine;
+    height: 100vh;
+    width: 70vw;
+    position: absolute;
+    font-size: 2em;
+    z-index: 1  
+}
+
+.sublist {
+    padding-left: 70px;
+    
+    
+}
+
+.burgerMenu {
+    position: absolute;
+    color: brown;
+    z-index: 2;
+}
+
+li {
+    list-style: none;
+    text-align: left;
+    padding: 5px 0;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+
+

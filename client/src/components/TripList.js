@@ -31,13 +31,11 @@ export default function TripList() {
 
 	return (
 		<>
-			<h1>All your Trips</h1>
 			<ul>
 			{trips.map(trip => 
             <li><Link to={`/${trip._id}`}>{trip.title}</Link></li>
             )}
-			</ul>
-			
+			</ul>			
 		</>
 	)
 }

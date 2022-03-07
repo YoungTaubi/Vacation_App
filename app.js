@@ -24,6 +24,9 @@ app.use("/api/trips", isAuthenticated, trips);
 const expences = require("./routes/expences");
 app.use("/api/expences", isAuthenticated, expences);
 
+const account = require("./routes/account");
+app.use("/api/account", isAuthenticated, account);
+
 const auth = require("./routes/auth");
 app.use("/api/auth", auth);
 

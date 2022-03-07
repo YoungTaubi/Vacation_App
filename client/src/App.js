@@ -23,7 +23,7 @@ function App() {
         }/>           
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/account' element={
+        <Route path='/account/:id' element={
         <ProtectedRoute redirectTo='/login'> 
           <Account />
         </ProtectedRoute>

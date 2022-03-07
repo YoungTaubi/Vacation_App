@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import Multiselect from 'multiselect-react-dropdown';
+import '../MultiselectDropdown.css';
 
 
 export default function AddTrip(props) {
@@ -8,8 +10,10 @@ export default function AddTrip(props) {
 	const [description, setDescription] = useState('');
 	const [participants, setParticipants] = useState([])
 	const [allUsers, setAllUsers] = useState([])
+	const [select, setSelect] = useState([])
 
 	const storedToken = localStorage.getItem('authToken')
+	const currentSelect = []
 
 	const getAllUsers = () => {
 		axios.get('/api/trips/users', { headers: { Authorization: `Bearer ${storedToken}` } })
@@ -51,6 +55,18 @@ export default function AddTrip(props) {
 		setParticipants(value);
 	  }
 
+
+	function onSelect(selectedList, selectedItem) {
+		console.log('options',selectedItem);
+		console.log('selectedList: ', selectedList); 	
+		setParticipants(selectedList);	
+		
+	}
+
+	function onRemove(selectedList, removedItem) {
+		
+	}
+
 	useEffect(() => {
 		getAllUsers()
 	}, [])
@@ -58,6 +74,7 @@ export default function AddTrip(props) {
 
 	return (
 		<>
+		<div>
 			<h1>Add new Trip</h1>
 			<form onSubmit={handleSubmit}>
 				<label htmlFor="title">Title: </label>
@@ -75,15 +92,40 @@ export default function AddTrip(props) {
 					onChange={e => setDescription(e.target.value)}
 				/>
 				<label htmlFor="participants">Participants: </label>
-				<select type='checkbox' name="participants" multiple
+				{/* <select type='checkbox' name="participants" multiple
 				onChange={handleChange}>
 					{allUsers.map(user => 
 					
 					<option value={user._id}>{user.name}</option>
 					)}
-				</select>
+				</select> */}
+				<Multiselect 
+				style={{chips: {
+    					background: 'green'
+    					},
+    					multiselectContainer: {
+    					  color: 'red'
+    					},
+    					searchBox: {
+    					  border: 'none',
+    					  'borderBottom': '1px solid blue',
+    					  'borderRadius': '0px'
+    					}}}	
+				options={allUsers} // Options to display in the dropdown
+				 // Preselected value to persist in dropdown
+				onSelect={onSelect} // Function will trigger on select event
+				onRemove={onRemove} // Function will trigger on remove event
+				displayValue="name" // Property name to display in the dropdown options
+			/>
 				<button type="submit">Add this Trip</button>
 			</form>
+		</div>
+
+			
+			
+				
+
+				
 			
 			
 		</>
