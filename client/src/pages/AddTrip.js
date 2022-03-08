@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Multiselect from 'multiselect-react-dropdown';
 import '../MultiselectDropdown.css';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function AddTrip(props) {
@@ -10,10 +11,10 @@ export default function AddTrip(props) {
 	const [description, setDescription] = useState('');
 	const [participants, setParticipants] = useState([])
 	const [allUsers, setAllUsers] = useState([])
-	const [select, setSelect] = useState([])
 
 	const storedToken = localStorage.getItem('authToken')
-	const currentSelect = []
+
+	const navigate = useNavigate()
 
 	const getAllUsers = () => {
 		axios.get('/api/trips/users', { headers: { Authorization: `Bearer ${storedToken}` } })
@@ -31,14 +32,21 @@ export default function AddTrip(props) {
 		// send the data from the state as a post request to 
 		// the backend
 		axios.post('/api/trips', { title, description, participants }, { headers: { Authorization: `Bearer ${storedToken}` } })
-			.then(response => {
-				//console.log(response)
+			.then(res => {
+				console.log('res',res)
+				// reset the form
+				setTitle('')
+				setDescription('')
+				setParticipants([])
+				navigate(`/${res.data._id}`)
 			})
 			.catch(err => console.log(err))
 		// reset the form
 		setTitle('')
 		setDescription('')
 		setParticipants([])
+		//navigate(`/projects/${id}`)
+
 		// refresh the list of the trips in ProjectList
 		//props.refreshTrips()
 	}
@@ -71,14 +79,14 @@ export default function AddTrip(props) {
 		getAllUsers()
 	}, [])
 
-
 	return (
 		<>
-		<div>
-			<h1>Add new Trip</h1>
-			<form onSubmit={handleSubmit}>
+		<div class="container">
+			<h2>Add a new Trip</h2>
+			<form class='addTripContaier' onSubmit={handleSubmit}>
 				<label htmlFor="title">Title: </label>
 				<input
+					class='addTripInput'
 					id="title"
 					type="text"
 					value={title}
@@ -86,6 +94,7 @@ export default function AddTrip(props) {
 				/>
 				<label htmlFor="title">Description: </label>
 				<input
+					class='addTripInput'
 					id="description"
 					type="text"
 					value={description}
@@ -101,23 +110,55 @@ export default function AddTrip(props) {
 				</select> */}
 				<Multiselect 
 				style={{chips: {
-    					background: 'green'
+    					  background: '#CCFFBD',
+						  color: '#40394A',
+						  fontSize: '1em',
+						  borderRadius: '2em',
+						  margin: '5px'
+						//   position: 'absolut'
     					},
     					multiselectContainer: {
-    					  color: 'red'
+    					  color: '#40394A',
+						  
+						//   background: 'red',
     					},
     					searchBox: {
-    					  border: 'none',
-    					  'borderBottom': '1px solid blue',
-    					  'borderRadius': '0px'
-    					}}}	
+						// background: 'rgb(240, 240,240)',
+    					  width: '240px',
+						  minHeight: '40px',
+						  maxHeight: 'fit-content',
+						  border: '1px solid rgb(200,200,200)',
+    					  borderRadius: '20px',
+						//   textAlign: 'center'
+						//   display: 'flex',
+						//   justifyContent: 'center',
+    					//   alignItems: 'center',
+						//   position: 'relativ',
+						//   boxSizing: 'border-box'
+    					},
+						optionContainer: {
+							// background: '#CCFFBD'
+							border: 'none',
+							borderRadius: '20px',
+						},
+						option: {
+							background: '#CCFFBD',
+							border: 'none',
+						}	
+		
+						}}	
 				options={allUsers} // Options to display in the dropdown
+				// customCloseIcon={'cancel'}
 				 // Preselected value to persist in dropdown
 				onSelect={onSelect} // Function will trigger on select event
 				onRemove={onRemove} // Function will trigger on remove event
 				displayValue="name" // Property name to display in the dropdown options
+				id="css_custom"
+				avoidHighlightFirstOption
+				placeholder='Search Participants'
+				// closeIcon="close"
 			/>
-				<button type="submit">Add this Trip</button>
+				<button class='submitButton' type="submit">Add this Trip</button>
 			</form>
 		</div>
 

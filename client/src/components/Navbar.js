@@ -61,6 +61,8 @@ export default function Navbar() {
 					<>
 					{navOpen ? closeMenu : burgerMenu}
 					{ navOpen && 
+					<>
+					<div class='background'></div>
 					<motion.nav 
 					class='navbar'
 					initial={animateFrom}
@@ -84,9 +86,9 @@ export default function Navbar() {
 							</li>
 							}
 							<li onClick={logoutUser}><p>Logout</p></li>
-						</ul>
-						
-					</motion.nav>
+						</ul>						
+					</motion.nav>					
+					</>
 					}
 					</>
 				) : (

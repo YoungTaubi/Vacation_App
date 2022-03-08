@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Multiselect from 'multiselect-react-dropdown';
 
 export default function AddExpence(props) {
 
@@ -163,13 +164,27 @@ export default function AddExpence(props) {
 		getAllTripParticipants()
 	}, [])
 
+	function onSelect(selectedList, selectedItem) {
+		console.log('options',selectedItem);
+		console.log('selectedList: ', selectedList); 	
+		setDebitors(selectedList);	
+		
+	}
+
+	function onRemove(selectedList, removedItem) {
+		
+	}
+
 
 	return (
 		<>
-			<h1>Add new Expence</h1>
-			<form onSubmit={handleSubmit}>
+		<div class="addExpenceContainer">
+			
+			<form class='addExpenceForm' onSubmit={handleSubmit}>
+				<h2>Add new Expence</h2>
 				<label htmlFor="title">Title: </label>
 				<input
+					class='addTripInput'
 					id="title"
 					type="text"
 					value={title}
@@ -177,6 +192,7 @@ export default function AddExpence(props) {
 				/>
 				<label htmlFor="title">Amout: </label>
 				<input
+					class='addTripInput'
 					id="amount"
 					type="number"
 					placeholder='0'
@@ -190,7 +206,48 @@ export default function AddExpence(props) {
 					
 					<option value={user._id} >{user.name}</option>
 					)}
-				</select>
+				</select> 
+				{/* <Multiselect 
+				style={{chips: {
+    					  background: '#CCFFBD',
+						  color: '#40394A',
+						  fontSize: '1em',
+						  borderRadius: '2em',
+						  margin: '5px'
+    					},
+    					multiselectContainer: {
+    					  color: '#40394A',
+    					},
+    					searchBox: {
+    					  width: '240px',
+						  minHeight: '40px',
+						  maxHeight: 'fit-content',
+						  background: 'rgb(245,245,245)',
+						  border: '1px solid rgb(200,200,200)',
+    					  borderRadius: '20px',
+    					},
+						optionContainer: {
+							// background: '#CCFFBD'
+							border: 'none',
+							borderRadius: '20px',
+						},
+						option: {
+							background: '#CCFFBD',
+							border: 'none',
+						}	
+		
+						}}	
+				options={tripParticipants} // Options to display in the dropdown
+				// customCloseIcon={'cancel'}
+				 // Preselected value to persist in dropdown
+				onSelect={onSelect} // Function will trigger on select event
+				onRemove={onRemove} // Function will trigger on remove event
+				displayValue="name" // Property name to display in the dropdown options
+				id="css_custom"
+				avoidHighlightFirstOption
+				placeholder='Search Participants'
+				// closeIcon="close"
+			/> */}
 				{debitors.map(user =>
 					<div>
 						<h3>{user.debitorName}</h3>
@@ -209,10 +266,10 @@ export default function AddExpence(props) {
 					</div> 
 					)}
 
-				<button type="submit">Add this Expence</button>
+				<button class='submitButton' type="submit">Add this Expence</button>
 			</form>
 			
-			
+		</div>
 		</>
 	)
 }

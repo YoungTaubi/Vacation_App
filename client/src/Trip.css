@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: #40394A;
+}
+
+label {
+    margin: 20px;
+}
+
+.container {
+    margin: 0;
+    padding: 80px 50px;
+    /* padding: 50px; */
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    flex-direction: column;
+}
+
+.addTripContaier {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.addTripInput {
+    padding: 0 20px;
+    margin-bottom: 15px;
+    width: 200px;
+    height: 40px;
+    border-radius: 2em;
+    border: none;
+    background-color: rgb(245,245,245);
+    /* outline: none; */
+}
+
+input.addTripInput:focus {
+    outline-width: 0;
+    border: 2px #40394A solid ;
+}
+
+.optionContainer .highlight,
+.optionContainer li:hover {
+    background: green;
+    color: rgb(255, 0, 0);
+    /* display: none; */
+}
+
+/* .optionContainer .highlight {
+  background: red;
+  color: green;
+} */
+
+.searchBox#css_custom_input::placeholder {
+    padding-left: 60px;
+    padding-bottom: 50px;
+}
+
+.submitButton {
+    padding: 0 20px;
+    margin: 40px;
+    width: 180px;
+    height: 40px;
+    border-radius: 2em;
+    border: none;
+    background-color: #40394A;
+    color: white;
+    font-weight:bolder ;
+}
+
+.addExpence {
+    position: absolute;
+    right: 30px;
+    bottom: 80px;
+}
+
+.addExpenceContainer {
+    height: 500px;
+    width: 320px;
+    margin: 60px 20px;
+    position: absolute;
+    background-color: #CCFFBD;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+}
+
+.addExpenceForm {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
