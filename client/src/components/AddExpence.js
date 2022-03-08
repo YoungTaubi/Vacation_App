@@ -93,6 +93,10 @@ export default function AddExpence(props) {
 		updateDebt()
 	}, [multiplier, amount])
 
+	useEffect(() => {
+		getAllTripParticipants()
+	}, [id])
+
 	//console.log(Object.keys(multiplier));
 	//console.log(Object.values(multiplier));	
 
