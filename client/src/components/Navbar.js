@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import { AuthContext } from '../context/auth'
 import axios from 'axios';
 import TripList from '../components/TripList'
-import YourTrips from '../pages/YourTrips'
 import '../Navbar.css';
+import {HiMenuAlt3} from 'react-icons/hi'
+import {RiCloseLine} from 'react-icons/ri'
+import {motion} from 'framer-motion'
 
 export default function Navbar() {
 
@@ -27,13 +29,29 @@ export default function Navbar() {
 		})
 	}
 
-	// const toggleSubList = () => {
+	const burgerMenu =  <HiMenuAlt3 class='burgerMenu'
+						size='40px' color='black'
+						onClick={() => setNavOpen(!navOpen)}/>
 
-	// }
+	const closeMenu =  <RiCloseLine class='burgerMenu'
+						size='40px' 
+						onClick={() => setNavOpen(!navOpen)}/>
+
+
+	const closeSumMenu = () => {
+		setOpen(!open)
+	}
+
+	const closeNavbar = () => {
+		setNavOpen(!navOpen)
+	}
 
 	useEffect(() => {
         getUserId()
     }, [])
+
+	const animateFrom = {opacity: 0.7, x: -40}
+	const animateTo = {opacity: 1, x: 0}
 
 	return (
 		<nav>
@@ -41,29 +59,34 @@ export default function Navbar() {
 			{isLoggedIn ?
 				(
 					<>
-					<h1 class='burgerMenu' onClick={() => setNavOpen(!navOpen)}>+</h1>
+					{navOpen ? closeMenu : burgerMenu}
 					{ navOpen && 
-					<nav class='navbar'>
+					<motion.nav 
+					class='navbar'
+					initial={animateFrom}
+					animate={animateTo}
+					transition={{delay: 0.05}}
+					>
 						<ul>
 							<Link to={`/account/${userId}`}>
-								<li>Your Account</li>
+								<li onClick={() => {setNavOpen(!navOpen); setOpen(false)}}>Your Account</li>
 							</Link>
 							<Link to='/'>
-								<li>Home</li>
+								<li onClick={() => {setNavOpen(!navOpen); setOpen(false)}}>Home</li>
 							</Link>
 							<Link to='/add-trip'>
-								<li>Add new trip</li>
+								<li onClick={() => {setNavOpen(!navOpen); setOpen(false)}}>Add new trip</li>
 							</Link>							
-							<li onClick={() => setOpen(!open)}>Your Trips</li>
+							<li onClick={() => setOpen(!open)}><p>Your Trips</p></li>
 							{open && 
 							<li class='sublist'>							
-							<TripList />
+							<TripList closeSumMenu={closeSumMenu} closeNavbar={closeNavbar}/>
 							</li>
 							}
-							<li onClick={logoutUser}>Logout</li>
+							<li onClick={logoutUser}><p>Logout</p></li>
 						</ul>
 						
-					</nav>
+					</motion.nav>
 					}
 					</>
 				) : (
