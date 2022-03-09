@@ -15,26 +15,26 @@ export default function AddExpence(props) {
 		<div class='allExpencesContainer'>
 		<div class='expencesContainer'>
 			<h3 class="title">All your Expences:</h3>
-			<h3>{props.allExpencesFromUser.amount} €</h3>
+			<h3>{Math.round((props.allExpencesFromUser.amount + Number.EPSILON) * 100) / 100} €</h3>
 		</div>
 			{
 			props.allExpencesFromUser.userTotalCredit > props.allExpencesFromUser.userTotalDebt ?
 			<>
 		<div class='expencesContainer'>
 			<h3 class="title">Your total Credit:</h3>
-			<h3>{props.allExpencesFromUser.userTotalCredit} €</h3> 
+			<h3>{Math.round((props.allExpencesFromUser.userTotalCredit + Number.EPSILON) * 100) / 100} €</h3> 
 		</div>
 			</>:
 			<>
 		<div class='expencesContainer'>
 			<h3 class="title">Your total Debt:</h3>
-			<h3>{props.allExpencesFromUser.userTotalDebt} €</h3>
+			<h3>{Math.round((props.allExpencesFromUser.userTotalDebt + Number.EPSILON) * 100) / 100} €</h3>
 		</div>
 			</>
 			}
 		<div class='expencesContainer'>
 			<h3 class="title">Total trip Expences:</h3>
-			<h3>{props.allExpencesFromUser.totalTripExpences} €</h3>
+			<h3>{Math.round((props.allExpencesFromUser.totalTripExpences + Number.EPSILON) * 100) / 100} €</h3>
 		</div>
 		</div>	
 		</>
