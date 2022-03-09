@@ -13,13 +13,13 @@ export default function AddExpence(props) {
 	// 	debitorDebt: 0
 	// }
 	);
-	//console.log('debitor State: ', debitors);
+	// console.log('debitor State: ', debitors);
 	//console.log('debitorDebt State: ', debitors.debitorDebt);
 	const [tripParticipants, setTripParticipants] = useState([]);
 	const [multiplier, setMultiplier] = useState({
 		// 0: 0
 	})
-	//console.log('multiplier State:', multiplier );
+	console.log('multiplier State:', multiplier );
 	//console.log('tripParticipants state', tripParticipants);
 
 	const storedToken = localStorage.getItem('authToken')
@@ -123,24 +123,19 @@ export default function AddExpence(props) {
 					debitorsUpd.push({...debitor, debitorDebt: result})
 					// (...debitor, {debitorDebt: [result]})
 				}
-
 			// 	if (debitor.debitorId === key) {
 			// 		setDebitors(() => ({
 			// 			...debitors,
 			// 			debitorDebt: procentage * Number(value)
 			// 		}))
 			// 		console.log('test',debitor.debitorDebt);
-			//    }
-			
-			 }
-			 
-			 
+			//    }			
+			 }		 
 	 		//console.log('multiplier total: ', multiplierTotal);
 			//console.log('array', debitorsUpd);
 	 		// console.log(Object.keys(multiplier));
 			setDebitors(debitorsUpd)
-			props.refreshAllExpencesFromUser()
-			
+			props.refreshAllExpencesFromUser()			
 			//props.getAllExpencesFromUser()
 	 }	 
 	)}
@@ -164,16 +159,30 @@ export default function AddExpence(props) {
 		getAllTripParticipants()
 	}, [])
 
+	
 	function onSelect(selectedList, selectedItem) {
-		console.log('options',selectedItem);
+		//console.log('options',selectedItem);
 		console.log('selectedList: ', selectedList); 	
-		setDebitors(selectedList);	
-		
+		setDebitors(selectedList);
+		console.log('debitor State: ', debitors);
+		test2()		
 	}
 
 	function onRemove(selectedList, removedItem) {
-		
+		setDebitors(selectedList);
+		console.log('selectedList deselect: ', selectedList); 
+		console.log('debitor State: ', debitors);
 	}
+
+	console.log('debitor State out: ', debitors);
+
+	const test2 = () => {
+		console.log('debitor State test2: ', debitors);
+		return debitors.map((user, index) =>
+			<h2 key={index}>hallo</h2>
+			)
+	}
+
 
 
 	return (
@@ -200,14 +209,14 @@ export default function AddExpence(props) {
 					onChange={handleAmountChanage}
 				/>
 				<label htmlFor="debitors">Who is paining? </label>
-				<select type='checkbox' name="debitors.debitorId" multiple
+				{/* <select type='checkbox' name="debitors.debitorId" multiple
 				onChange={handleChange}>
 					{tripParticipants.map(user => 
 					
 					<option value={user._id} >{user.name}</option>
 					)}
-				</select> 
-				{/* <Multiselect 
+				</select>  */}
+				<Multiselect 
 				style={{chips: {
     					  background: '#CCFFBD',
 						  color: '#40394A',
@@ -247,8 +256,8 @@ export default function AddExpence(props) {
 				avoidHighlightFirstOption
 				placeholder='Search Participants'
 				// closeIcon="close"
-			/> */}
-				{debitors.map(user =>
+			/> 
+				{/* {debitors.map(user =>
 					<div>
 						<h3>{user.debitorName}</h3>
 						<h3>{user.debitorDebt ? user.debitorDebt +' €' : 0 +' €'}</h3>
@@ -264,7 +273,11 @@ export default function AddExpence(props) {
 						/>
 
 					</div> 
-					)}
+					)} */}
+					{debitors.map(user =>
+					<h2>{user.name}</h2>
+					)} 
+				
 
 				<button class='submitButton' type="submit">Add this Expence</button>
 			</form>
