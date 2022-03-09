@@ -10,6 +10,7 @@ export default function AddTrip(props) {
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [participants, setParticipants] = useState([])
+	console.log('participants state',participants);
 	const [allUsers, setAllUsers] = useState([])
 
 	const storedToken = localStorage.getItem('authToken')
@@ -51,33 +52,42 @@ export default function AddTrip(props) {
 		//props.refreshTrips()
 	}
 
-	const handleChange = (e) => {
-		var options = e.target.options;
-		var value = [];
-		for (let i = 0, l = options.length; i < l; i++) {
-		  if (options[i].selected) {
-			value.push(options[i].value);
-		  }		  
-		}
-		//console.log('value: ', value);
-		setParticipants(value);
-	  }
+	// const handleChange = (e) => {
+	// 	var options = e.target.options;
+	// 	var value = [];
+	// 	for (let i = 0, l = options.length; i < l; i++) {
+	// 	  if (options[i].selected) {
+	// 		value.push(options[i].value);
+	// 	  }		  
+	// 	}
+	// 	//console.log('value: ', value);
+	// 	setParticipants(value);
+	//   }
 
 
 	function onSelect(selectedList, selectedItem) {
-		console.log('options',selectedItem);
+		//console.log('options',selectedItem);
 		console.log('selectedList: ', selectedList); 	
-		setParticipants(selectedList);	
-		
+		setParticipants((state) => [...state, selectedItem]);		
 	}
 
 	function onRemove(selectedList, removedItem) {
-		
+		let participantsCopy = participants.filter(participant => participant._id !== removedItem._id)
+		console.log('filtered:', participantsCopy);
+		setParticipants(participantsCopy);
 	}
 
 	useEffect(() => {
 		getAllUsers()
 	}, [])
+
+	const showState = () => {
+		console.log('current State', participants);
+	}
+
+	useEffect(() => {
+		showState()
+	}, [participants])
 
 	return (
 		<>
@@ -137,12 +147,12 @@ export default function AddTrip(props) {
 						//   boxSizing: 'border-box'
     					},
 						optionContainer: {
-							// background: '#CCFFBD'
+							background: '#CCFFBD',
 							border: 'none',
 							borderRadius: '20px',
 						},
 						option: {
-							background: '#CCFFBD',
+							// background: '#CCFFBD',
 							border: 'none',
 						}	
 		
@@ -161,12 +171,6 @@ export default function AddTrip(props) {
 				<button class='submitButton' type="submit">Add this Trip</button>
 			</form>
 		</div>
-
-			
-			
-				
-
-				
 			
 			
 		</>

@@ -6,6 +6,7 @@ import AllExpences from '../components/AllExpences';
 import axios from 'axios';
 import '../Trip.css';
 import {MdAddCircle} from 'react-icons/md'
+import {RiCloseLine} from 'react-icons/ri'
 
 
 export default function Home(props) {
@@ -65,7 +66,21 @@ export default function Home(props) {
 		getCurrentTrip()
 	}, [])
 
+	const handleAddTripWindow = () => {
+		setAddTripWindowOpen(!addTripWindowOpen)
+	}
 
+	const closeTripWindow = <RiCloseLine 
+							class='closeAddExpence'
+							size='50px' color='#40394A'
+							onClick={() => handleAddTripWindow()} 
+							/>
+	
+	const openTripWindow = <MdAddCircle 
+							class='addExpence'
+							size='50px' color='#40394A'
+							onClick={() => handleAddTripWindow()} 
+							/>
 
 	return (
         <>
@@ -73,25 +88,18 @@ export default function Home(props) {
 		<h2>{currentTrip.title}</h2>
 		{
 			addTripWindowOpen && 
-			<AddExpence refreshAllExpencesFromUser={getAllExpencesFromUser} refreshAllExpences={getAllExpences} />
+			<AddExpence 
+			refreshAllExpencesFromUser={getAllExpencesFromUser} 
+			refreshAllExpences={getAllExpences} 
+			closeWindow={handleAddTripWindow}	
+			/>
 		} 
+		{!addTripWindowOpen && openTripWindow}
         
         {/* <ExpencesOverview allExpencesFromUser={usersExpences} /> */}
         {/* <AllExpences allExpencesOfTrip={allExpences} getAllExpences={getAllExpences} refreshAllExpencesFromUser={getAllExpencesFromUser}/> */}
-		<MdAddCircle 
-		class='addExpence'
-		size='50px' color='#40394A'
-		onClick={() => setAddTripWindowOpen(!addTripWindowOpen)} 
-		/>
-		</div>
-		<div class='test'>
-			<ul class='test1'>
-					{allExpences.map(expence => 
-						<li>{expence.amount}</li>
-					)}
-			</ul>
-		</div>
 		
+		</div>
         </>
 	)
 }

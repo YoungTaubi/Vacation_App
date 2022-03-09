@@ -50,8 +50,8 @@ input.addTripInput:focus {
 
 .optionContainer .highlight,
 .optionContainer li:hover {
-    background: green;
-    color: rgb(255, 0, 0);
+    background: #40394A;
+    color: white;
     /* display: none; */
 }
 
@@ -83,6 +83,13 @@ input.addTripInput:focus {
     bottom: 80px;
 }
 
+.closeAddExpence {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+}
+
 .addExpenceContainer {
     height: 500px;
     width: 320px;
@@ -103,15 +110,5 @@ input.addTripInput:focus {
     align-items: center;
 }
 
-.test {
-    background-color: #CCFFBD;
-    height: 200px;
-    overflow: auto;
-    /* position: absolute; */
-}
-
-.test1 {
-    position: relative;
-}
 
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Multiselect from 'multiselect-react-dropdown';
+import {RiCloseLine} from 'react-icons/ri'
 
 export default function AddExpence(props) {
 
@@ -44,7 +45,7 @@ export default function AddExpence(props) {
 		axios.post(`/api/expences/${id}`, { title, amount, debitors }, { headers: { Authorization: `Bearer ${storedToken}` } })			
 			.then(response => {
 				
-				//console.log('responce: ',response.data)
+				console.log('response: ',response.data)
 			})
 			.catch(err => console.log(err))
 		// reset the form
@@ -54,23 +55,24 @@ export default function AddExpence(props) {
 		// refresh the list of the trips in ProjectList
 		props.refreshAllExpencesFromUser()
 		props.refreshAllExpences()
+		props.closeWindow()
 	}
 
-	const handleChange = (e) => {
-		let options = e.target.options;
-		let value = [];
-		//console.log('options: ', options);
-		for (let i = 0, l = options.length; i < l; i++) {
-		  if (options[i].selected) {
-			//console.log(options[i].value);
-			setInitialMultiplier(options[i].value)
-			value.push({debitorId: options[i].value, debitorName: options[i].innerText});
-			}		  
-		}
-		//console.log('value: ', value);
-		setDebitors(value);
-		// props.refreshAllExpencesFromUser()
-	}
+	// const handleChange = (e) => {
+	// 	let options = e.target.options;
+	// 	let value = [];
+	// 	//console.log('options: ', options);
+	// 	for (let i = 0, l = options.length; i < l; i++) {
+	// 	  if (options[i].selected) {
+	// 		//console.log(options[i].value);
+	// 		setInitialMultiplier(options[i].value)
+	// 		value.push({debitorId: options[i].value, debitorName: options[i].innerText});
+	// 		}		  
+	// 	}
+	// 	//console.log('value: ', value);
+	// 	setDebitors(value);
+	// 	// props.refreshAllExpencesFromUser()
+	// }
 
 	function setInitialMultiplier(id) {
 		setMultiplier(() => ({
@@ -105,6 +107,7 @@ export default function AddExpence(props) {
 		const allMultipliers = Object.entries(multiplier)	
 		let multiplierTotal = 0
 		const debitorsUpd = []
+		console.log('debitorsUpd', debitorsUpd);
 		for (let [key, value] of allMultipliers) {
 			multiplierTotal += Number(value)			
 		}
@@ -113,10 +116,12 @@ export default function AddExpence(props) {
 		//console.log('all multi: ', multiplier);
 		debitors.map((debitor) => {	
 					
+			console.log('deb id',debitor._id);
 	 		//console.log('debitor: ', debitor);
 			 for (let [key, value] of allMultipliers) {				
 				//console.log(key, value);
-				if (debitor.debitorId === key) {
+				
+				if (debitor._id === key) {
 					let result = procentage * Number(value)
 					debitor.debitorDebt = procentage * Number(value)
 					//console.log('debitors debt: ',debitor.debitorDebt);
@@ -134,7 +139,8 @@ export default function AddExpence(props) {
 	 		//console.log('multiplier total: ', multiplierTotal);
 			//console.log('array', debitorsUpd);
 	 		// console.log(Object.keys(multiplier));
-			setDebitors(debitorsUpd)
+			setDebitors(() => debitorsUpd)
+			console.log('debitorsUpd',debitorsUpd);
 			props.refreshAllExpencesFromUser()			
 			//props.getAllExpencesFromUser()
 	 }	 
@@ -148,7 +154,6 @@ export default function AddExpence(props) {
 		// console.log('debitors debt: ',debitors)
 		
 	}
-
 	
 
 	const test = () => {
@@ -159,31 +164,30 @@ export default function AddExpence(props) {
 		getAllTripParticipants()
 	}, [])
 
+	const showDebitors = () => {
+		console.log('deb status', debitors);
+	}
+
+	useEffect(() => {
+		showDebitors()
+	}, [debitors])
+
 	
 	function onSelect(selectedList, selectedItem) {
 		//console.log('options',selectedItem);
-		console.log('selectedList: ', selectedList); 	
-		setDebitors(selectedList);
-		console.log('debitor State: ', debitors);
-		test2()		
+		setInitialMultiplier(selectedItem._id)
+		//console.log('selectedList: ', selectedList); 	
+		setDebitors((state) => [...state, selectedItem]);	
+			
 	}
 
 	function onRemove(selectedList, removedItem) {
-		setDebitors(selectedList);
-		console.log('selectedList deselect: ', selectedList); 
-		console.log('debitor State: ', debitors);
+		let debitorsCopy = debitors.filter(participant => participant._id !== removedItem._id)
+		console.log('filtered:', debitorsCopy);
+		setDebitors(debitorsCopy);
 	}
 
-	console.log('debitor State out: ', debitors);
-
-	const test2 = () => {
-		console.log('debitor State test2: ', debitors);
-		return debitors.map((user, index) =>
-			<h2 key={index}>hallo</h2>
-			)
-	}
-
-
+	console.log('debitor State out: ', debitors)
 
 	return (
 		<>
@@ -216,7 +220,7 @@ export default function AddExpence(props) {
 					<option value={user._id} >{user.name}</option>
 					)}
 				</select>  */}
-				<Multiselect 
+			 <Multiselect 
 				style={{chips: {
     					  background: '#CCFFBD',
 						  color: '#40394A',
@@ -236,12 +240,12 @@ export default function AddExpence(props) {
     					  borderRadius: '20px',
     					},
 						optionContainer: {
-							// background: '#CCFFBD'
+							background: '#CCFFBD',
 							border: 'none',
 							borderRadius: '20px',
 						},
 						option: {
-							background: '#CCFFBD',
+							// background: '#CCFFBD',
 							border: 'none',
 						}	
 		
@@ -256,10 +260,10 @@ export default function AddExpence(props) {
 				avoidHighlightFirstOption
 				placeholder='Search Participants'
 				// closeIcon="close"
-			/> 
-				{/* {debitors.map(user =>
+			/>  
+				{debitors.map(user =>
 					<div>
-						<h3>{user.debitorName}</h3>
+						<h3>{user.name}</h3>
 						<h3>{user.debitorDebt ? user.debitorDebt +' €' : 0 +' €'}</h3>
 						<input 
 						id='debitors.debitorDebt'
@@ -268,18 +272,20 @@ export default function AddExpence(props) {
 						placeholder='1'
 						min={test ? '2' : '1'}
 						onChange={(e) => {
-							handleDebtChange(e, user.debitorId)							
+							handleDebtChange(e, user._id)							
 							}}
 						/>
 
 					</div> 
-					)} */}
-					{debitors.map(user =>
-					<h2>{user.name}</h2>
 					)} 
 				
 
 				<button class='submitButton' type="submit">Add this Expence</button>
+				<RiCloseLine 
+							class='closeAddExpence'
+							size='50px' color='#40394A'
+							onClick={() => props.closeWindow()} 
+							/>
 			</form>
 			
 		</div>

@@ -16,12 +16,12 @@ const expenceSchema = new Schema({
 		{
 			// type: Schema.Types.ObjectId,
 			// ref: 'User'
-			debitorId:
+			_id:
 				{
 					type: Schema.Types.ObjectId,
 					ref: 'User'
 				},
-			debitorName:
+			name:
 			{
 				type: String,
 				ref: 'User'
