@@ -101,7 +101,17 @@ input.addTripInput:focus {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
 
+.test {
+    background-color: #CCFFBD;
+    height: 200px;
+    overflow: auto;
+    /* position: absolute; */
+}
+
+.test1 {
+    position: relative;
 }
 
 

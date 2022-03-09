@@ -74,7 +74,7 @@ export default function Home(props) {
 		{
 			addTripWindowOpen && 
 			<AddExpence refreshAllExpencesFromUser={getAllExpencesFromUser} refreshAllExpences={getAllExpences} />
-		}
+		} 
         
         {/* <ExpencesOverview allExpencesFromUser={usersExpences} /> */}
         {/* <AllExpences allExpencesOfTrip={allExpences} getAllExpences={getAllExpences} refreshAllExpencesFromUser={getAllExpencesFromUser}/> */}
@@ -84,6 +84,14 @@ export default function Home(props) {
 		onClick={() => setAddTripWindowOpen(!addTripWindowOpen)} 
 		/>
 		</div>
+		<div class='test'>
+			<ul class='test1'>
+					{allExpences.map(expence => 
+						<li>{expence.amount}</li>
+					)}
+			</ul>
+		</div>
+		
         </>
 	)
 }
