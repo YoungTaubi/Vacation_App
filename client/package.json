@@ -11,6 +11,8 @@
     "framer-motion": "^6.2.8",
     "multiselect-react-dropdown": "^2.0.21",
     "react": "^17.0.2",
+    "react-currency-format": "^1.1.0",
+    "react-currency-input-field": "^3.6.4",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.2",

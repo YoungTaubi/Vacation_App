@@ -5,6 +5,7 @@ import '../MultiselectDropdown.css';
 import { useNavigate } from 'react-router-dom';
 
 
+
 export default function AddTrip(props) {
 
 	const [title, setTitle] = useState('');
@@ -92,7 +93,7 @@ export default function AddTrip(props) {
 	return (
 		<>
 		<div class="container">
-			<h2>Add a new Trip</h2>
+			<h2 class='headline'>Add a new Trip</h2>
 			<form class='addTripContaier' onSubmit={handleSubmit}>
 				<label htmlFor="title">Title: </label>
 				<input

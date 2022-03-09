@@ -67,7 +67,7 @@ router.get('/:id/users-expences', (req, res, next) => {
             expences.map((expence) => {
                 expence.debitors.map((debitor) => {
                     //console.log('debitor Id ', debitor.debitorId);
-                    if (String(debitor.debitorId) == userId) {                    
+                    if (String(debitor._id) == userId) {                    
                         userTotalDebt += debitor.debitorDebt
                         console.log('trip total expences',totalTripExpences);
                         console.log('user total debt',userTotalDebt);                 

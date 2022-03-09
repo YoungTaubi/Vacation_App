@@ -12,23 +12,31 @@ export default function AddExpence(props) {
    
     return (
 		<>
-			<h1>Overview</h1>
-			<h1>All your Expences</h1>
-			<h2>{props.allExpencesFromUser.amount}</h2>
+		<div class='allExpencesContainer'>
+		<div class='expencesContainer'>
+			<h3 class="title">All your Expences:</h3>
+			<h3>{props.allExpencesFromUser.amount} €</h3>
+		</div>
 			{
 			props.allExpencesFromUser.userTotalCredit > props.allExpencesFromUser.userTotalDebt ?
 			<>
-			<h1>Your total Credit</h1>
-			<h2>{props.allExpencesFromUser.userTotalCredit}</h2> 
+		<div class='expencesContainer'>
+			<h3 class="title">Your total Credit:</h3>
+			<h3>{props.allExpencesFromUser.userTotalCredit} €</h3> 
+		</div>
 			</>:
-			<> 
-			<h1>Your total Debt</h1>
-			<h2>{props.allExpencesFromUser.userTotalDebt}</h2>
+			<>
+		<div class='expencesContainer'>
+			<h3 class="title">Your total Debt:</h3>
+			<h3>{props.allExpencesFromUser.userTotalDebt} €</h3>
+		</div>
 			</>
 			}
-			<h1>Total trip Expences</h1>
-			<h2>{props.allExpencesFromUser.totalTripExpences}</h2>
-			
+		<div class='expencesContainer'>
+			<h3 class="title">Total trip Expences:</h3>
+			<h3>{props.allExpencesFromUser.totalTripExpences} €</h3>
+		</div>
+		</div>	
 		</>
 	)
 

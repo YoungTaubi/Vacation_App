@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Multiselect from 'multiselect-react-dropdown';
 import {RiCloseLine} from 'react-icons/ri'
+// import CurrencyFormat from 'react-currency-format';
+// import CurrencyInput from 'react-currency-input-field';
+import {motion, AnimatePresence} from 'framer-motion'
 
 export default function AddExpence(props) {
 
@@ -46,16 +49,17 @@ export default function AddExpence(props) {
 			.then(response => {
 				
 				console.log('response: ',response.data)
+				setTitle('')
+				setAmount('')
+				setDebitors([])
+				// refresh the list of the trips in ProjectList
+				props.refreshAllExpencesFromUser()
+				props.refreshAllExpences()
+				props.closeWindow()
 			})
 			.catch(err => console.log(err))
 		// reset the form
-		setTitle('')
-		setAmount('')
-		setDebitors([])
-		// refresh the list of the trips in ProjectList
-		props.refreshAllExpencesFromUser()
-		props.refreshAllExpences()
-		props.closeWindow()
+		
 	}
 
 	// const handleChange = (e) => {
@@ -141,8 +145,9 @@ export default function AddExpence(props) {
 	 		// console.log(Object.keys(multiplier));
 			setDebitors(() => debitorsUpd)
 			console.log('debitorsUpd',debitorsUpd);
-			props.refreshAllExpencesFromUser()			
-			//props.getAllExpencesFromUser()
+			// props.refreshAllExpencesFromUser()
+			// props.refreshAllExpences()			
+			
 	 }	 
 	)}
 
@@ -190,14 +195,20 @@ export default function AddExpence(props) {
 	console.log('debitor State out: ', debitors)
 
 	return (
-		<>
+		<>		
+		<div class='background'></div>
+		<motion.div 
+
+			initial={{ scale: 0 , y: 0, x: 0}}
+			animate={{ scale: 1, y: -100, x: -180}}>
+		
 		<div class="addExpenceContainer">
 			
 			<form class='addExpenceForm' onSubmit={handleSubmit}>
 				<h2>Add new Expence</h2>
 				<label htmlFor="title">Title: </label>
 				<input
-					class='addTripInput'
+					class='addExpenseInput'
 					id="title"
 					type="text"
 					value={title}
@@ -205,10 +216,11 @@ export default function AddExpence(props) {
 				/>
 				<label htmlFor="title">Amout: </label>
 				<input
-					class='addTripInput'
+					class='addExpenseInput'
 					id="amount"
 					type="number"
-					placeholder='0'
+					placeholder='0 €'
+					// prefix={'$'}
 					value={amount}
 					onChange={handleAmountChanage}
 				/>
@@ -220,6 +232,7 @@ export default function AddExpence(props) {
 					<option value={user._id} >{user.name}</option>
 					)}
 				</select>  */}
+			
 			 <Multiselect 
 				style={{chips: {
     					  background: '#CCFFBD',
@@ -230,6 +243,7 @@ export default function AddExpence(props) {
     					},
     					multiselectContainer: {
     					  color: '#40394A',
+						//   overflow: 'auto',
     					},
     					searchBox: {
     					  width: '240px',
@@ -240,13 +254,14 @@ export default function AddExpence(props) {
     					  borderRadius: '20px',
     					},
 						optionContainer: {
-							background: '#CCFFBD',
+							// background: '#CCFFBD',
 							border: 'none',
 							borderRadius: '20px',
 						},
 						option: {
 							// background: '#CCFFBD',
 							border: 'none',
+						
 						}	
 		
 						}}	
@@ -260,12 +275,14 @@ export default function AddExpence(props) {
 				avoidHighlightFirstOption
 				placeholder='Search Participants'
 				// closeIcon="close"
-			/>  
-				{debitors.map(user =>
-					<div>
-						<h3>{user.name}</h3>
-						<h3>{user.debitorDebt ? user.debitorDebt +' €' : 0 +' €'}</h3>
+			 /> 
+			 <div class='addBuyersContainer'> 
+			 {debitors.map(user =>
+					<div class='buyer'>
+						<h4>{user.name}</h4>
+						<h4 class='amount'>{user.debitorDebt ? Math.round((user.debitorDebt + Number.EPSILON) * 100) / 100 +' €' : 0 +' €'}</h4>
 						<input 
+						class='multiplierInput'
 						id='debitors.debitorDebt'
 						type="number"
 						value={multiplier.key} 
@@ -275,12 +292,13 @@ export default function AddExpence(props) {
 							handleDebtChange(e, user._id)							
 							}}
 						/>
-
 					</div> 
 					)} 
+			</div>
+				
 				
 
-				<button class='submitButton' type="submit">Add this Expence</button>
+				<button class='submitButton' type="submit">Add this Expense</button>
 				<RiCloseLine 
 							class='closeAddExpence'
 							size='50px' color='#40394A'
@@ -289,6 +307,9 @@ export default function AddExpence(props) {
 			</form>
 			
 		</div>
+		
+		</motion.div>
+		
 		</>
 	)
 }

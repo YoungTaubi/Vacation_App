@@ -44,18 +44,25 @@ export default function AddExpence(props) {
    
     return (
 		<>
-			<h1>All Expences</h1>
+            {allExpences.length > 0 ?
+            <>
+            <div class='allExpencesContainer'>
             {allExpences.map((expence) => 
-                <div>
-                    <h3>{expence.title}</h3>
-                    <h3>{expence.amount} €</h3>
-                    <h3>Paied by: {expence.creditorName}</h3>
+                 
+                <>
+                    <h4 class='title'>{expence.title}</h4>
+                    <h4>{expence.amount} €</h4>
+                    <h4>Paied by: {expence.creditorName}</h4>
                     {
                         userId === expence.creditor && 
-                        <button onClick={() => deleteExpence(expence._id)}>Delete this expence</button>    
+                        <button class='deleteButton' onClick={() => deleteExpence(expence._id)}>Delete this expense</button>    
                     }   
-                </div>           
-            )} 
+                </>         
+            )}
+            </div>
+            </> :
+            <h2>There are no expenses yet...</h2>
+            }
 					
 		</>
 	)    
