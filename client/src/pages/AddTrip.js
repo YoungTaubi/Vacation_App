@@ -13,10 +13,23 @@ export default function AddTrip(props) {
 	const [participants, setParticipants] = useState([])
 	console.log('participants state',participants);
 	const [allUsers, setAllUsers] = useState([])
+	const [userId, setUserId] = useState(null)
 
 	const storedToken = localStorage.getItem('authToken')
 
 	const navigate = useNavigate()
+
+	// Get user Id
+	const getUserId= () => {
+		axios.get(`/api/expences/user-id`, { headers: { Authorization: `Bearer ${storedToken}` } })
+		.then(res => {
+			//console.log('user Id: ', res.data);
+			setUserId(res.data)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+		}
 
 	const getAllUsers = () => {
 		axios.get('/api/trips/users', { headers: { Authorization: `Bearer ${storedToken}` } })
@@ -67,9 +80,15 @@ export default function AddTrip(props) {
 
 
 	function onSelect(selectedList, selectedItem) {
-		//console.log('options',selectedItem);
-		console.log('selectedList: ', selectedList); 	
-		setParticipants((state) => [...state, selectedItem]);		
+		console.log('options',selectedItem);
+		// console.log('selectedList: ', selectedList);
+		if (selectedItem._id.toString() === userId.toString()) {
+			console.log('owner');
+			setParticipants((state) => [...state, {...selectedItem, joining: true}]);
+		} else {
+			setParticipants((state) => [...state, {...selectedItem, joining: false}]);	
+		}	  	
+			
 	}
 
 	function onRemove(selectedList, removedItem) {
@@ -80,6 +99,7 @@ export default function AddTrip(props) {
 
 	useEffect(() => {
 		getAllUsers()
+		getUserId()
 	}, [])
 
 	const showState = () => {

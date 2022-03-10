@@ -15,7 +15,30 @@ router.get('/users', (req, res, next) => {
 // get all the trips which are eather owned or joined by user
 router.get('/', (req, res, next) => {
   const userId = req.payload._id
-  Trip.find({ $or: [{owner: userId}, {participants: userId}] })
+  // Trip.find({ $or: [{owner: userId}, {$and: [{'participants._id': userId}, {'participants.joining': true}]}] })
+  Trip.find({ $or: [{owner: userId}, {'participants._id': [userId]}]})
+    .populate('participants')
+    .then(trips => {
+      console.log('trips',trips);
+      const filteredStrips = []
+        trips.map(trip => {
+        trip.participants.map(participant => {          
+          if (participant.joining === true) {
+            console.log('participant', participant);
+            filteredStrips.push(trip)
+          } 
+        })
+      })
+      console.log('filteredStrips', filteredStrips);
+      res.status(200).json(filteredStrips)
+    })
+});
+
+// get all the trip invites
+router.get('/invites', (req, res, next) => {
+  const userId = req.payload._id
+  Trip.find({ $and: [{'participants._id': userId}, {'participants.joining': false}, {owner: { $ne: userId }}] })
+    .populate('owner')
     .then(trips => {
       res.status(200).json(trips)
     })
@@ -24,13 +47,35 @@ router.get('/', (req, res, next) => {
 // get all the participants of the trip
 router.get('/:id/trip-participants', (req, res , next) => {
   const tripId = req.params.id
+  const userId = req.payload._id
+  console.log('loggen in user:', userId);
   //console.log('trip id: ',tripId)
   Trip.findById(tripId)
     .then(trip => {
+      //console.log('joining:', trip.participants);
       User.find({_id: {$in: trip.participants}})
-        .then(user => {
-        //console.log('users: ',user);
-        res.status(200).json(user)
+      // User.find({ $and: [{_id: {$in: trip.participants}}, {'trip.participants.joining': false}]})
+        .then(users => {
+        const allParticipants = Object.entries(trip.participants)
+        const filteredUsers = users.filter(user => {
+          // console.log('user', user._id);
+          for (let [key, value] of allParticipants) {
+              // console.log('participant',value._id)
+              // console.log('user',user._id)
+              if (user._id.toString() === userId) {
+                return true
+              }
+              else if (user._id.toString() === value._id.toString() && value.joining === true) {
+              //console.log('true')
+              return true
+              } else {
+                //console.log('false')
+              }
+          }       
+        }) 
+        //console.log('users: ',users);
+        console.log('filteredusers: ',filteredUsers);
+        res.status(200).json(filteredUsers)
       })
     })  
 });
@@ -73,6 +118,20 @@ router.put('/:id', (req, res, next) => {
     description,
   }, { new: true })
     .then(updatedTrip => {
+      res.status(200).json(updatedTrip)
+    })
+    .catch(err => next(err))
+});
+
+// accept an invite
+router.put('/invites/:id', (req, res, next) => {
+  const { participants } = req.body
+  
+  Trip.findByIdAndUpdate(req.params.id, {
+    participants
+  }, { new: true })
+    .then(updatedTrip => {
+      console.log('updatedTrip',updatedTrip);
       res.status(200).json(updatedTrip)
     })
     .catch(err => next(err))

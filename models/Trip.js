@@ -10,8 +10,12 @@ const tripSchema = new Schema({
 	},
 	participants: [
 		{
-			type: Schema.Types.ObjectId,
-			ref: 'User'
+			_id: 
+				{
+					type: Schema.Types.ObjectId,
+					ref: 'User'
+				},
+			joining: Boolean
 		}
 
 	],
