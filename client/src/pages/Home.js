@@ -9,8 +9,22 @@ const storedToken = localStorage.getItem('authToken')
 const [invites, setInvites] = useState([])
 const [inviteAnswer, setInviteAnswer] = useState([])
 const [userId, setUserId] = useState(null)
+const [currentUser, setCurrentUser] = useState(null)
+const [submitButtonState, setSubmitButtonState] = useState(true)
 
 const navigate = useNavigate()
+
+	// Get the current user (makes Get user Id obsolete => needs to be updated)
+	const getUser = () => {
+	axios.get(`/api/trips/currentUser`, { headers: { Authorization: `Bearer ${storedToken}` } })
+	.then(res => {
+		console.log('user: ', res.data);
+		setCurrentUser(res.data)
+	})
+	.catch(err => {
+		console.log(err)
+	})
+	}
 
 	// Get user Id
 	const getUserId= () => {
@@ -66,24 +80,50 @@ const navigate = useNavigate()
 		console.log('inviteAnswer', inviteAnswer);
 		//handleSubit(id)
 	}
+
+	const toggleSubmitButtonState = () => {
+		setSubmitButtonState(!submitButtonState)
+	}
   	
   	useEffect(() => {
+		  getUser()
 	      getUserId()
 		  getInvites()
+		  
   	}, [])
+
+	useEffect(() => {
+		getInvites()
+	}, [inviteAnswer])
 
 	return (
 		<>
-		<h1>This is the Home Page</h1>
+		<div class="homeContainer container">
+		{currentUser && 
+		<h2 class='headline'>Welcome {currentUser.name}</h2>
+		}
+		{invites.length > 0 ?
+		<>
+		<h3 class='subHeadline'>You have {invites.length} new invite{invites.length > 1 && 's'}</h3>
+		<div class='showInvitesContainer'>
 		{invites.map(invite => 
 			<div key={invite._id}>
-				<h3>{invite.owner.name} invited you to:</h3>
+				<h3 class='bold menuSelected'>{invite.owner.name} </h3>
+				<h3>invited you to:</h3>
 				<h3>{invite.title}</h3>
 				<h3>Do you want to join?</h3>
-				<button onClick={() => joinTrip(invite._id)}>Yes</button>
-				<button onClick={() => handleSubit(invite._id)}>Submit</button>
+				{submitButtonState ?
+				<button class='submitButton' onClick={() => {toggleSubmitButtonState(); joinTrip(invite._id)}}>Yes</button> :
+				<button class='submitButton' onClick={() => {toggleSubmitButtonState(); handleSubit(invite._id)}}>Submit</button>
+				}
 			</div>
 		)}
+		</div>
+		</>
+		:
+		<h3 class='subHeadline' >You haven't received any invites yet</h3>
+		}
+		</div>
 		</>
 	)
 }

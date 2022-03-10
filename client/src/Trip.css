@@ -217,5 +217,39 @@ input.addTripInput:focus {
     margin: 15px;
 }
 
+.subHeadline {
+    margin: 20px;
+}
+
+.bold {
+    font-weight: 900;
+}
+
+.homeContainer h3 {
+    margin: 10px;
+} 
+
+.homeContainer .submitButton {
+    padding: 0 20px;
+    margin: 20px;
+    width: 180px;
+    height: 40px;
+    border-radius: 2em;
+    border: none;
+    background-color: #40394A;
+    color: white;
+    font-weight:bolder ;
+}
+
+.showInvitesContainer {
+    margin-top: 10px;
+    height: 70vh;
+    overflow: auto;
+}
+
+.accountInfo h2 {
+    margin: 20px;
+}
+
 
 

@@ -11,6 +11,7 @@ export default function Login() {
 	const [name, setName] = useState('')
     const [email, setEmail] = useState('')
 	const [user, setUser] = useState({})
+	const [handleAccountWindow, setHandleAccountWindow] = useState(true)
 	//console.log('user', user);
 
 	const storedToken = localStorage.getItem('authToken')
@@ -48,22 +49,32 @@ export default function Login() {
 		getUserData()
 	}, [])
 
-	
-		
+	const toggleAccountWindow = () => {
+		setHandleAccountWindow(!handleAccountWindow)
+	}		
 
 	return (
 		<>
-			<h1>Your Account</h1>
+		<div class='container'>
+
+		{handleAccountWindow ?
+		<div class='accountInfo'>
+			<h2 class='headline'>Your Account</h2>
 			<h3>User Name: {user.name}</h3>	
-			<h1>Your Email</h1>
-			<h3>Email: {user.email}</h3>	
+			<h3>Email: {user.email}</h3>
+			<button class='submitButton' onClick={() => toggleAccountWindow()}>Edit</button>	
+		</div>
+			:
 			<EditAccount 
 			handleNameChange={handleNameChange} 
 			handleEmailChange={handleEmailChange} 
 			handleSubmit={handleSubmit}
+			toggleAccountWindow={toggleAccountWindow}
 			email={email}
 			name={name}
-			/>			
+			/>
+		}
+		</div>			
 		</>
 	)
 }

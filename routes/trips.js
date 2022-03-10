@@ -3,6 +3,16 @@ const User = require("../models/User");
 
 const router = require("express").Router();
 
+// get the current users
+router.get('/currentUser', (req, res, next) => {
+  const userId = req.payload._id
+  User.findById(userId)
+    .then(user => {
+      console.log('user:', user);
+      res.status(200).json(user)
+    })
+});
+
 // get all the users
 router.get('/users', (req, res, next) => {
   User.find()
@@ -16,15 +26,17 @@ router.get('/users', (req, res, next) => {
 router.get('/', (req, res, next) => {
   const userId = req.payload._id
   // Trip.find({ $or: [{owner: userId}, {$and: [{'participants._id': userId}, {'participants.joining': true}]}] })
-  Trip.find({ $or: [{owner: userId}, {'participants._id': [userId]}]})
+  // Trip.find({$and: [{'participants._id': userId}, {$or:[{'participants.joining': true} , {'participants.joining': 'true'}]}]  })
+  // Trip.find({'participants.joining': true})
+  Trip.find({ $or: [{owner: userId}, {'participants._id': userId}]})
     .populate('participants')
     .then(trips => {
       console.log('trips',trips);
       const filteredStrips = []
         trips.map(trip => {
         trip.participants.map(participant => {          
-          if (participant.joining === true) {
-            console.log('participant', participant);
+          if (participant.joining === true && participant._id.toString() === userId.toString()) {
+            console.log('participant', participant );
             filteredStrips.push(trip)
           } 
         })
@@ -35,12 +47,32 @@ router.get('/', (req, res, next) => {
 });
 
 // get all the trip invites
+// router.get('/invites', (req, res, next) => {
+//   const userId = req.payload._id
+//   Trip.find({ $and: [{'participants._id': userId}, {'participants.joining': false}, {owner: { $ne: userId }}] })
+//     .populate('owner')
+//     .then(trips => {
+//       res.status(200).json(trips)
+//     })
+// });
+
+// get all the trip invites
 router.get('/invites', (req, res, next) => {
   const userId = req.payload._id
   Trip.find({ $and: [{'participants._id': userId}, {'participants.joining': false}, {owner: { $ne: userId }}] })
     .populate('owner')
     .then(trips => {
-      res.status(200).json(trips)
+      const filteredStrips = []
+        trips.map(trip => {
+        trip.participants.map(participant => {          
+          if (participant.joining === false && participant._id.toString() === userId.toString()) {
+            console.log('participant', participant );
+            filteredStrips.push(trip)
+          } 
+        })
+      })
+      console.log('filteredStrips', filteredStrips);
+      res.status(200).json(filteredStrips)
     })
 });
 
