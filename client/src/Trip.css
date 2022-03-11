@@ -45,7 +45,7 @@ label {
     padding: 0 20px;
     margin-bottom: 15px;
     width: 200px;
-    height: 40px;
+    min-height: 40px;
     border-radius: 2em;
     border: none;
     background-color: rgb(245,245,245);
@@ -78,7 +78,7 @@ input.addTripInput:focus {
     padding: 0 20px;
     margin: 40px;
     width: 180px;
-    height: 40px;
+    min-height: 40px;
     border-radius: 2em;
     border: none;
     background-color: #40394A;
