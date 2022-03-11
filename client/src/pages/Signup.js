@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { AuthContext } from '../context/auth'
+import splitify_logo from '../splitify_logo.png'
 
 export default function Signup() {
 
@@ -42,21 +43,24 @@ export default function Signup() {
 
 	return (
 		<>
-			<h1>Signup</h1>
-			<form onSubmit={handleSubmit}>
+		<div class='backgroundLogin'>
+		<img class='logo' src={splitify_logo} alt='logo'/>
+			<h2 class='headline2'>Signup</h2>
+			<form class='loginContaier' onSubmit={handleSubmit}>
 				<label htmlFor="email">Email: </label>
-				<input type="text" value={email} onChange={handleEmail} />
+				<input class='addTripInput' type="text" value={email} onChange={handleEmail} />
 				<label htmlFor="password">Password: </label>
-				<input type="password" value={password} onChange={handlePassword} />
+				<input class='addTripInput' type="password" value={password} onChange={handlePassword} />
 				<label htmlFor="name">Name: </label>
-				<input type="text" value={name} onChange={handleName} />
-				<button type="submit">Sign Up</button>
+				<input class='addTripInput' type="text" value={name} onChange={handleName} />
+				<button class='submitButton' type="submit">Sign Up</button>
 			</form>
 
 			{errorMessage && <h5>{errorMessage}</h5>}
 
 			<h3>Already have an account?</h3>
 			<Link to='/login'>Login</Link>
+		</div>
 		</>
 	)
 }

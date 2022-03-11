@@ -6,15 +6,17 @@ import { useParams } from 'react-router-dom';
 
 export default function EditAccount(props) {
 	
-	const submitChanges = () => {
+	const submitChanges = (e) => {
 		props.toggleAccountWindow()
-		props.handleSubmit()
+		props.handleSubmit(e)
 	}
 
 	return (
 		<>
-			<h1>Edit Account</h1>
-            <form onSubmit={submitChanges}>
+		<div class='container'>
+			<h2 class='headline'>Edit Account</h2>
+			<div>
+            <form class='addTripContaier' onSubmit={submitChanges}>
 				<label htmlFor="name">Name: </label>
 				<input
 					class='addTripInput'
@@ -24,7 +26,7 @@ export default function EditAccount(props) {
                     placeholder={props.name}
 					onChange={props.handleNameChange}
 				/>
-				<label htmlFor="email">Description: </label>
+				<label htmlFor="email">Email: </label>
 				<input
 					class='addTripInput'
 					id="email"
@@ -33,8 +35,10 @@ export default function EditAccount(props) {
                     placeholder={props.email}
 					onChange={props.handleEmailChange}
 				/>
-				<button type="submit">Save changes</button>
-			</form>				
+				<button class='submitButton' type="submit">Save changes</button>
+			</form>	
+			</div>	
+		</div>		
 		</>
 	)
 }

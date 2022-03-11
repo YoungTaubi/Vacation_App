@@ -247,9 +247,29 @@ input.addTripInput:focus {
     overflow: auto;
 }
 
-.accountInfo h2 {
+.accountInfo h3 {
     margin: 20px;
 }
 
+.accountInfo {
+    width: 300px;
+    
+}
 
+.textContainer {
+    width: 300px;
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    overflow: auto;
+}
 
+.textContentContainer1 {
+    text-align: left;
+}
+
+.textContentContainer2 {
+    position: absolute;
+    left: 125px;
+    text-align: left;
+}

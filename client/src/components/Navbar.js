@@ -7,6 +7,7 @@ import '../Navbar.css';
 import {HiMenuAlt3} from 'react-icons/hi'
 import {RiCloseLine} from 'react-icons/ri'
 import {motion} from 'framer-motion'
+import splitify_logo from '../splitify_logo.png'
 
 export default function Navbar() {
 
@@ -56,26 +57,29 @@ export default function Navbar() {
 	return (
 		<nav>
 			
-			{isLoggedIn ?
+			{isLoggedIn &&
 				(
 					<>
+					
 					{navOpen ? closeMenu : burgerMenu}
 					{ navOpen && 
 					<>
 					<div class='background'></div>
+					
 					<motion.nav 
 					class='navbar'
 					initial={animateFrom}
 					animate={animateTo}
 					transition={{delay: 0.05}}
 					>
+						<img class='logo2' src={splitify_logo} alt='logo'/>
 						<ul>
-							<Link to={`/account/${userId}`}>
-								<li onClick={() => {setNavOpen(!navOpen); setOpen(false)}}>Your Account</li>
-							</Link>
 							<Link to='/'>
 								<li onClick={() => {setNavOpen(!navOpen); setOpen(false)}}>Home</li>
 							</Link>
+							<Link to={`/account/${userId}`}>
+								<li onClick={() => {setNavOpen(!navOpen); setOpen(false)}}>Your Account</li>
+							</Link>							
 							<Link to='/add-trip'>
 								<li onClick={() => {setNavOpen(!navOpen); setOpen(false)}}>Add new trip</li>
 							</Link>							
@@ -90,15 +94,6 @@ export default function Navbar() {
 					</motion.nav>					
 					</>
 					}
-					</>
-				) : (
-					<>
-						<Link to='/signup'>
-							<button>Signup</button>
-						</Link>
-						<Link to='/login'>
-							<button>Login</button>
-						</Link>
 					</>
 				)}
 		</nav>
