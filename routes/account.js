@@ -14,6 +14,7 @@ router.get("/:id", (req, res, next) => {
 
 // update user data
 router.put('/:id', (req, res, next) => {
+    // console.log('test');
     const { name, email } = req.body
     User.findByIdAndUpdate(req.params.id, {
       name,

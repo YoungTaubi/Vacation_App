@@ -26,7 +26,8 @@ const expenceSchema = new Schema({
 				type: String,
 				ref: 'User'
 			},
-			debitorDebt: Number
+			debitorDebt: Number,
+			markedAsPaied: Boolean
 		}
 	]
 });

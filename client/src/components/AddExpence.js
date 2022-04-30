@@ -129,7 +129,7 @@ export default function AddExpence(props) {
 					let result = procentage * Number(value)
 					debitor.debitorDebt = procentage * Number(value)
 					//console.log('debitors debt: ',debitor.debitorDebt);
-					debitorsUpd.push({...debitor, debitorDebt: result})
+					debitorsUpd.push({...debitor, debitorDebt: result, markedAsPaied: false})
 					// (...debitor, {debitorDebt: [result]})
 				}
 			// 	if (debitor.debitorId === key) {

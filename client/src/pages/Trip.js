@@ -3,10 +3,10 @@ import { Link, useParams } from 'react-router-dom';
 import AddExpence from '../components/AddExpence'
 import ExpencesOverview from '../components/ExpencesOverview'
 import AllExpences from '../components/AllExpences';
+import Settlement from '../components/Settlement';
 import axios from 'axios';
 import '../Trip.css';
 import {MdAddCircle} from 'react-icons/md'
-import {RiCloseLine} from 'react-icons/ri'
 import {motion, AnimatePresence} from 'framer-motion'
 
 
@@ -17,6 +17,9 @@ export default function Home(props) {
 	const [currentTrip, setCurrentTrip] = useState({})
 	const [addTripWindowOpen, setAddTripWindowOpen] = useState(false)
 	const [toggleMenu, setToggleMenu] = useState(false)
+	const [settlements, setSettlements] = useState([])
+	// const [debitors, setDebitors] = useState([])
+	// const [creditors, setCreditors] = useState([])
     console.log('state users expences: ',usersExpences );
 	console.log('allExpences state: ', allExpences);
 
@@ -28,8 +31,21 @@ export default function Home(props) {
     const getAllExpencesFromUser = () => {
 		axios.get(`/api/expences/${id}/users-expences`, { headers: { Authorization: `Bearer ${storedToken}` } })
 		.then(res => {
-			console.log('users-expences: ', res.data);
+			// console.log('users-expences: ', res.data);
 			setUsersExpences(res.data)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+	}
+
+	const getAllUsersCreditAndDebt = () => {
+		axios.get(`/api/expences/${id}/users-creditAndDebt`, { headers: { Authorization: `Bearer ${storedToken}` } })
+		.then(res => {
+			console.log('CreditAndDebt: ', res.data);
+			setSettlements(res.data.settlementsFromDB)
+			// setCreditors(res.data.creditors)
+			// setDebitors(res.data.debitors)
 		})
 		.catch(err => {
 			console.log(err)
@@ -39,7 +55,7 @@ export default function Home(props) {
     const getAllExpences = () => {
 		axios.get(`/api/expences/${id}/all-expences`, { headers: { Authorization: `Bearer ${storedToken}` } })
 		.then(res => {
-			console.log('all-expences: ', res.data);
+			// console.log('all-expences: ', res.data);
 			setAllExpences(res.data)
 		})
 		.catch(err => {
@@ -50,7 +66,7 @@ export default function Home(props) {
 	const getCurrentTrip = () => {
 		axios.get(`/api/trips/${id}`, { headers: { Authorization: `Bearer ${storedToken}` } })
 		.then(res => {
-			console.log('current trip: ', res.data);
+			// console.log('current trip: ', res.data);
 			setCurrentTrip(res.data)
 		})
 		.catch(err => {
@@ -62,21 +78,23 @@ export default function Home(props) {
         getAllExpencesFromUser()
         getAllExpences()
 		getCurrentTrip()
+		getAllUsersCreditAndDebt()
     }, [id])
 
 	useEffect(() => {
 		getCurrentTrip()
+		getAllUsersCreditAndDebt()
 	}, [])
 
 	const handleAddTripWindow = () => {
 		setAddTripWindowOpen(!addTripWindowOpen)
 	}
 
-	const closeTripWindow = <RiCloseLine 
-							class='closeAddExpence'
-							size='50px' color='#40394A'
-							onClick={() => handleAddTripWindow()} 
-							/>
+	// const closeTripWindow = <RiCloseLine 
+	// 						class='closeAddExpence'
+	// 						size='50px' color='#40394A'
+	// 						onClick={() => handleAddTripWindow()} 
+	// 						/>
 	
 	const openTripWindow = <MdAddCircle 
 							class='addExpence'
@@ -133,7 +151,11 @@ export default function Home(props) {
 		<h3 class={!toggleMenu && 'menuSelected'} onClick={() => {setToggleMenu(!toggleMenu)}}>Overview</h3>
 		<h3 class={toggleMenu && 'menuSelected'} onClick={() => {setToggleMenu(true)}}>All Expenses</h3>
         </div>
-		{toggleMenu ? showAllExpences() : showOverview()}		
+		{toggleMenu ? showAllExpences() : showOverview()}	
+		<Settlement 
+		settlements={settlements}	
+		updateSettlements={getAllUsersCreditAndDebt}	
+		/>	
 		</div>		
         </>
 	)
