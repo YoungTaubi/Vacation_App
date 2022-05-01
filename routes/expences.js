@@ -318,6 +318,7 @@ router.post('/:id/settlement', (req, res, next) => {
                         let userTotalDebt = 0
                         let userTotalCredit = 0
                         let user = {_id: participant.id, settlementDone: false}
+                        // console.log('user',user);
                         allUsersCreditAndDebt.push(user)
                         // console.log('allUsersCreditAndDebt0:', allUsersCreditAndDebt);
                         expences.map(expence => {
@@ -334,21 +335,21 @@ router.post('/:id/settlement', (req, res, next) => {
                                 } 
                             })
                         })
+                        console.log('settlementsFromDB', settlementsFromDB);
                         settlementsFromDB.forEach(settlement => {
-                            console.log('test');
-                            if (userId === settlement.creditor) {
-                                userTotalDebt + settlement.amount
-                                console.log('settlement cred', settlement);
-                            } else if (userId === settlement.debitor) {
-                                userTotalDebt - settlement.amount
-                                console.log('settlement deb', settlement);
+                            if (String(participant._id) === String(settlement.creditor)) {
+                                userTotalCredit -= settlement.amount
+                                user.credit = userTotalCredit
+                                console.log('user.credit', user.credit);
+                            } else if (String(participant._id) === String(settlement.debitor)) {
+                                userTotalDebt -= settlement.amount
+                                user.userDebt = userTotalDebt
+                                console.log('user.userDebt', user.userDebt);
                             }
                         })
                     }             
                     })
-            })
             
-            console.log('test');
             console.log('allUsersCreditAndDebt1:', allUsersCreditAndDebt);
 
             const createSettlement = (creditorID, debitorID, amount) => {
@@ -449,6 +450,7 @@ router.post('/:id/settlement', (req, res, next) => {
                     }
                 })
             })
+        })
             // console.log('debitors2', debitors);
             
             
