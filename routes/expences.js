@@ -274,6 +274,7 @@ const uniqueId = function(){
 // update marked as paied
 router.post('/:id/settlement', (req, res, next) => {
     const tripId = req.params.id
+    const userId = req.payload._id
 
     Settlement.deleteMany({
         trip: tripId, 
@@ -310,30 +311,45 @@ router.post('/:id/settlement', (req, res, next) => {
         Expence.find({_id: {$in: trip.expences}})
         .populate('debitors')
         .then(expences => {
-            trip.participants.map(participant => {
-            if (participant.joining === true) {
-                let userTotalDebt = 0
-                let userTotalCredit = 0
-                let user = {_id: participant.id, settlementDone: false}
-                allUsersCreditAndDebt.push(user)
-                expences.map(expence => {
-                    if (String(participant._id) === String(expence.creditor)) {
-                        userTotalCredit += expence.amount
-                        user.credit = userTotalCredit
-                    }
-                    expence.debitors.map(debitor => {
-                        if (String(participant._id) === String(debitor._id)) {
-                            userTotalDebt += debitor.debitorDebt
-                            user.userDebt = userTotalDebt
-                            user.name = debitor.name  
-                            user.markedAsPaied = debitor.markedAsPaied                         
-                        } 
+            Settlement.find({trip: tripId, markedAsPaied: true})
+            .then(settlementsFromDB => {
+                trip.participants.map(participant => {
+                    if (participant.joining === true) {
+                        let userTotalDebt = 0
+                        let userTotalCredit = 0
+                        let user = {_id: participant.id, settlementDone: false}
+                        allUsersCreditAndDebt.push(user)
+                        // console.log('allUsersCreditAndDebt0:', allUsersCreditAndDebt);
+                        expences.map(expence => {
+                            if (String(participant._id) === String(expence.creditor)) {
+                                userTotalCredit += expence.amount
+                                user.credit = userTotalCredit
+                            }
+                            expence.debitors.map(debitor => {
+                                if (String(participant._id) === String(debitor._id)) {
+                                    userTotalDebt += debitor.debitorDebt
+                                    user.userDebt = userTotalDebt
+                                    user.name = debitor.name  
+                                    user.markedAsPaied = debitor.markedAsPaied                         
+                                } 
+                            })
+                        })
+                        settlementsFromDB.forEach(settlement => {
+                            console.log('test');
+                            if (userId === settlement.creditor) {
+                                userTotalDebt + settlement.amount
+                                console.log('settlement cred', settlement);
+                            } else if (userId === settlement.debitor) {
+                                userTotalDebt - settlement.amount
+                                console.log('settlement deb', settlement);
+                            }
+                        })
+                    }             
                     })
-                })
-            }             
             })
-
-         console.log('allUsersCreditAndDebt:', allUsersCreditAndDebt);
+            
+            console.log('test');
+            console.log('allUsersCreditAndDebt1:', allUsersCreditAndDebt);
 
             const createSettlement = (creditorID, debitorID, amount) => {
                 Settlement.create({
