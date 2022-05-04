@@ -3,6 +3,12 @@ import React, { useEffect, useState, useContext } from 'react'
 import { AuthContext } from '../context/auth'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { motion } from 'framer-motion'
+// import styled from "styled-components";
+import { RiCloseLine } from 'react-icons/ri'
+import Switch from "../components/Switch";
+
+
 
 //import { useParams, useNavigate } from 'react-router-dom';
 // import axios from 'axios';
@@ -15,51 +21,87 @@ export default function AddExpence(props) {
       // show who owe´s whom what
       // if user is in debt, user see´s whom he owe´s
       // if user has credit, user see`s whom he get´s money from
-      console.log('props',props.creditors); 
-      console.log('props',props.debitors); 
+      console.log('props', props.creditors);
+      console.log('props', props.debitors);
       console.log('user', user);
+      console.log('tripwindow', props.settlementWindowOpen);
 
       const { id } = useParams()
 
       const storedToken = localStorage.getItem('authToken')
 
-      const showSettlement = () => {            
-            let renderDebitors = props.settlements.map(settlemt => {                  
-                  if (user._id === settlemt.creditor._id) {
-                        console.log('creditor');                  
+      const showSettlement = () => {
+
+            let renderDebitors = props.settlements.map(settlemt => {
+
+                  if (user._id === settlemt.creditor._id && !settlemt.markedAsReceived) {
                         return <div>
-                        <h4>You get {settlemt.amount}€ from {settlemt.debitor.name}</h4>
-                        <div>
-                        {settlemt.markedAsPaied &&
-                        <input 
-                              type="checkbox"
-                              checked={settlemt.markedAsReceived}   
-                              onChange={() => handleMarkedAsReceived(settlemt._id, settlemt.markedAsReceived)}      
-                        />
-                        }
-                        </div>
+                              {settlemt.markedAsPaied ?
+                                    <>
+                                          <h4 className='margin-top-20'>{settlemt.debitor.name} paid you {settlemt.amount}€</h4>
+                                          <div className='switch-container' style={{ width: '270px' }}>
+
+                                                <p>Did you receive the payment?</p>
+                                                <Switch
+                                                      // checked={settlemt.markedAsReceived}
+                                                      handleChange={handleMarkedAsReceived}
+                                                      id={settlemt._id}
+                                                      paied={settlemt.markedAsReceived}
+                                                />
+                                          </div>
+                                    </>
+                                    :
+                                    <div>
+                                          <h4 className='margin-top-20'>You get {settlemt.amount}€ from {settlemt.debitor.name}</h4>
+                                          <p className='margin-top-5'>{settlemt.debitor.name} did not pay yet</p>
+                                    </div>
+
+                              }
                         </div>
                   } else if (user._id === settlemt.debitor._id) {
-                        console.log('debitor');
-                        return <div>
-                        <h4>You owe {settlemt.creditor.name} {settlemt.amount}€</h4>
-                        <div>
-                        <input 
-                              type="checkbox"
-                              checked={settlemt.markedAsPaied}   
-                              onChange={() => handleMarkedAsPaied(settlemt._id, settlemt.markedAsPaied)}      
-                        />
-                        </div>
-                        </div>
-                  }                  
+                        return <>
+                              {settlemt.markedAsPaied ?
+                                    <div className='margin-top-20'>
+                                          <h4>You payed {settlemt.creditor.name} {settlemt.amount}€</h4>
+                                    </div>
+                                    :
+                                    <div className='margin-top-20'>
+                                          <h4>You owe {settlemt.creditor.name} {settlemt.amount}€</h4>
+                                    </div>
+
+                              }
+
+                              <div className='switch-container'>
+                                    {settlemt.markedAsPaied ?
+                                          <p>Mark as not paied</p>
+                                          :
+                                          <p>Mark as paied</p>
+                                    }
+                                    <Switch
+                                          checked={settlemt.markedAsPaied}
+                                          handleChange={handleMarkedAsPaied}
+                                          id={settlemt._id}
+                                          paied={settlemt.markedAsPaied}
+                                    />
+                              </div>
+                        </>
+
+
+                  }
             })
-            return renderDebitors            
+            return renderDebitors
       }
+
+      // const onChange = (newValue) => {
+      //       console.log(newValue);
+      //   };
+
+      //   const initialSelectedIndex = options.findIndex(({value}) => value === "true");
 
       const handleSettlement = () => {
             console.log('settlement');
-            const requestBody = {test: 'test'}
-            axios.post(`api/expences/${id}/settlement`, requestBody,{ headers: { Authorization: `Bearer ${storedToken}` } })
+            const requestBody = { test: 'test' }
+            axios.post(`api/expences/${id}/settlement`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
       }
 
       const handleMarkedAsPaied = (settlementId, markedAsPaied) => {
@@ -67,7 +109,7 @@ export default function AddExpence(props) {
                   settlementId: settlementId,
                   markedAsPaied: markedAsPaied
             }
-            axios.put(`api/expences/${id}/markedAsPaied`, requestBody,{ headers: { Authorization: `Bearer ${storedToken}` } })
+            axios.put(`api/expences/${id}/markedAsPaied`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
             props.updateSettlements()
             // showSettlement()
             // if (renderDebitors.userIsCreditor) {
@@ -84,15 +126,17 @@ export default function AddExpence(props) {
                   settlementId: settlementId,
                   markedAsReceived: markedAsReceived
             }
-            axios.put(`api/expences/${id}/markedAsReceived`, requestBody,{ headers: { Authorization: `Bearer ${storedToken}` } })
-            props.updateSettlements()
+
+            axios.put(`api/expences/${id}/markedAsReceived`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
+
+            setTimeout(() => props.updateSettlements(), 1000)
       }
 
       // const handleSubmit = (e) => {
       //   const requestBody = { name, email }        
       //   axios.put(`/api/account/${id}`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
       //   getUserData()	
-	// }
+      // }
 
       // const debitors = () => {
       //       // props.creditors.forEach(creditor => {
@@ -134,8 +178,8 @@ export default function AddExpence(props) {
 
 
       useEffect(() => {
-                       
-      }, [])
+            handleSettlement()
+      }, [props.settlementWindowOpen])
 
       useEffect(() => {
             showSettlement()
@@ -149,34 +193,33 @@ export default function AddExpence(props) {
 
       // console.log('renderDebitors', renderDebitors);
       // console.log('renderCreditors', renderCreditors);
-      
+
+
+
       return (
-	            <>
-                    <h2>Settlement</h2>
+            <>
+                  <div class='background'></div>
+                  <motion.div
+                        initial={{ scale: 0, y: 0, x: 0 }}
+                        animate={{ scale: 1, y: 1, x: 0 }}
+                  >
 
-                    {showSettlement()}
+                        <div class="settlementContainer">
 
-                    {/* {props.settlements.map(settlement => 
-                        <>
-                        <h3>{settlement.creditor.name}</h3>
-                        <h3>{settlement.debitor.name}</h3>
-                        <h3>{settlement.amount}</h3>
-                        </>
-                    )} */}
+                              <RiCloseLine
+                                    class='closeAddExpence'
+                                    size='50px' color='#40394A'
+                                    onClick={() => props.closeWindow()}
+                              />
 
-                    {/* {renderDebitors.userIsCreditor && typeof renderDebitors.debitors !== undefined &&
-                        showDebitors()
-                    }
-                    {renderCreditors.userIsCreditor === false && typeof renderCreditors.creditors !== undefined &&
-                        showCreditors()
-                    } */}
+                              <h2>Settlement</h2>
 
-                    <button onClick={() => handleSettlement()}>Settlement</button>
-                                      					 
-	            </>
-	      )    
+                              {showSettlement()}
+
+                              {/* <button onClick={() => handleSettlement()}>Settlement</button> */}
+                        </div>
+                  </motion.div>
+
+            </>
+      )
 }
-
-
-
-                   

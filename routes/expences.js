@@ -48,13 +48,14 @@ router.get('/:id/users-expences', (req, res, next) => {
     let userTotalDebt = 0
     let userTotalCredit = 0
     let totalTripExpences = 0
-    console.log('user total debt1',userTotalDebt);
+    // console.log('user total debt1',userTotalDebt);
     // Find the current trip
     Trip.findById(tripId)
     .then(trip => {  
         // Find all expences of the current trip      
         Expence.find({_id: {$in: trip.expences}})
         .populate('creditor')
+        .populate('debitors')
         .then(expences => {        
         expences.map((expence, index) => {
             totalTripExpences += expence.amount
@@ -62,26 +63,34 @@ router.get('/:id/users-expences', (req, res, next) => {
                 userTotalSpent += expence.amount
             }
         })
-            Expence.find({_id: {$in: trip.expences}})
-            .populate('debitors')
-            .then(expences => {        
+            Settlement.find({trip: tripId, markedAsPaied: true})
+            .then(settlementsFromDB => {        
             //console.log('debitors: ',expences[0]);
             expences.map((expence) => {
                 expence.debitors.map((debitor) => {
                     //console.log('debitor Id ', debitor.debitorId);
                     if (String(debitor._id) == userId) {                    
                         userTotalDebt += debitor.debitorDebt
-                        console.log('trip total expences',totalTripExpences);
-                        console.log('user total debt',userTotalDebt);                 
+                        // console.log('trip total expences',totalTripExpences);
+                        // console.log('user total debt',userTotalDebt);                 
                     } 
                                  
                 })            
             }) 
             if (userTotalSpent > userTotalDebt) {
                 userTotalCredit = userTotalSpent - userTotalDebt 
-                console.log('user total credit',userTotalCredit);
+                // console.log('user total credit',userTotalCredit);
             }
             userTotalDebt -= userTotalSpent 
+            settlementsFromDB.forEach(settlement => {
+                if (String(userId) === String(settlement.creditor)) {
+                    userTotalCredit -= settlement.amount
+                    // console.log('user.credit', userTotalCredit);
+                } else if (String(userId) === String(settlement.debitor)) {
+                    userTotalDebt -= settlement.amount
+                    // console.log('user.userDebt', userTotalDebt);
+                }
+            })
             res.status(200).json({amount:userTotalSpent, userTotalDebt, userTotalCredit, totalTripExpences})       
         })
         .catch(err => next(err))
@@ -96,13 +105,40 @@ router.get('/:id/users-expences', (req, res, next) => {
 router.get('/:id/all-expences', (req, res, next) => {
     const tripId = req.params.id
     const userId = req.payload._id
+    const allExpencesAndDoneSettlements = []
     // Find the current trip
     Trip.findById(tripId)
     .then(trip => {  
         // Find all expences of the current trip      
         Expence.find({_id: {$in: trip.expences}})
         .then(expences => {
-            res.status(200).json(expences)
+            // console.log('expences', expences);
+            Settlement.find({trip: tripId, markedAsPaied: true})
+            .populate('creditor')
+            .populate('debitor')
+            .then(settlementsFromDB => {
+                settlementsFromDB.forEach(settlement => {
+                    let settlementCopy = JSON.parse(JSON.stringify(settlement))
+                    settlementCopy.type = 'settlement'
+                    console.log('settlementCopy', settlementCopy);
+                    allExpencesAndDoneSettlements.push(settlementCopy)
+                })
+                expences.map(expence => {
+                    let expenceCopy = JSON.parse(JSON.stringify(expence))
+                    expenceCopy.type = 'expence'
+                    console.log('expenceCopy', expenceCopy);                    
+                    allExpencesAndDoneSettlements.push(expenceCopy)
+                })
+                console.log('allExpencesAndDoneSettlements', allExpencesAndDoneSettlements);
+                const allExpencesAndDoneSettlementsSorted = allExpencesAndDoneSettlements.sort((a, b) => {
+                    console.log(b.updatedAt);
+                    console.log(Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+                    return Date.parse(a.updatedAt) - Date.parse(b.updatedAt)
+                })
+                console.log('allExpencesAndDoneSettlementsSorted', allExpencesAndDoneSettlementsSorted);
+                res.status(200).json({expencesAndSettlements: allExpencesAndDoneSettlements})                
+            })
+                      
         })
         .catch(err => next(err))
     })
@@ -133,7 +169,7 @@ router.get('/:id/users-creditAndDebt', (req, res, next) => {
     .populate('debitor')
     .populate('creditor')
     .then(settlementsFromDB => {
-        console.log('settlements:',settlementsFromDB);
+        // console.log('settlements:',settlementsFromDB);
         res.status(200).json({settlementsFromDB})
     })
     .catch(err => next(err))
@@ -335,22 +371,22 @@ router.post('/:id/settlement', (req, res, next) => {
                                 } 
                             })
                         })
-                        console.log('settlementsFromDB', settlementsFromDB);
+                        // console.log('settlementsFromDB', settlementsFromDB);
                         settlementsFromDB.forEach(settlement => {
                             if (String(participant._id) === String(settlement.creditor)) {
                                 userTotalCredit -= settlement.amount
                                 user.credit = userTotalCredit
-                                console.log('user.credit', user.credit);
+                                // console.log('user.credit', user.credit);
                             } else if (String(participant._id) === String(settlement.debitor)) {
                                 userTotalDebt -= settlement.amount
                                 user.userDebt = userTotalDebt
-                                console.log('user.userDebt', user.userDebt);
+                                // console.log('user.userDebt', user.userDebt);
                             }
                         })
                     }             
                     })
             
-            console.log('allUsersCreditAndDebt1:', allUsersCreditAndDebt);
+            // console.log('allUsersCreditAndDebt1:', allUsersCreditAndDebt);
 
             const createSettlement = (creditorID, debitorID, amount) => {
                 Settlement.create({

@@ -17,7 +17,9 @@ const settlementSchema = new Schema({
     amount: Number,
     markedAsPaied: Boolean,
     markedAsReceived: Boolean
-});
+},
+{ timestamps: true }
+);
 
 const Settlement = mongoose.model('Settlement', settlementSchema);
 module.exports = Settlement;

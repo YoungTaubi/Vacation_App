@@ -27,10 +27,14 @@ const expenceSchema = new Schema({
 				ref: 'User'
 			},
 			debitorDebt: Number,
-			markedAsPaied: Boolean
+			markedAsPaied: Boolean,
+			
 		}
-	]
-});
+	],
+	// time : { type : Date, default: Date.now }
+},
+{ timestamps: true }
+);
 
 const Expence = mongoose.model('Expence', expenceSchema);
 module.exports = Expence;

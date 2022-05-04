@@ -36,7 +36,35 @@ export default function AddExpence(props) {
 			    //navigate(`/${expenceId}`)
 			})
 			.catch(err => console.log(err))
-	}   
+	}  
+    
+    const showAllExpences = () => {
+        const expenceAndSettlementList = allExpences.expencesAndSettlements.map(ele => {
+            if (ele.type === 'expence') { 
+                return <>
+                <div className='margin-top-20'>
+                    <h4 class='title'>{ele.title}</h4>
+                    <h4>{ele.amount} €</h4>
+                    <h4>Paied by: {ele.creditorName}</h4>
+                    {
+                        userId === ele.creditor && 
+                        <button class='deleteButton' onClick={() => deleteExpence(ele._id)}>Delete this expense</button>    
+                    } 
+                </div>  
+                </> 
+            } else if (ele.type === 'settlement') {
+                return <>
+                <div className='margin-top-20'>
+                    <h4 class='title'>Compensation</h4>
+                    <h4>{ele.debitor.name} payed {ele.creditor.name} {ele.amount}€</h4>
+                </div>
+                </>
+
+            }
+        })
+        return expenceAndSettlementList
+    }
+
     useEffect(() => {
         //props.getAllExpences()
         getUserId()
@@ -44,10 +72,12 @@ export default function AddExpence(props) {
    
     return (
 		<>
-            {allExpences.length > 0 ?
-            <>
+            {allExpences.expencesAndSettlements.length > 0 ?
+            showAllExpences()
+
+            /* <>
             <div class='allExpencesContainer'>
-            {allExpences.map((expence) => 
+            {allExpences.expencesAndSettlements.map((expence) => 
                  
                 <>
                     <h4 class='title'>{expence.title}</h4>
@@ -60,7 +90,8 @@ export default function AddExpence(props) {
                 </>         
             )}
             </div>
-            </> :
+            </> */
+            : 
             <h2>There are no expenses yet...</h2>
             }
 					

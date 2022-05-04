@@ -18,6 +18,7 @@ export default function Home(props) {
 	const [addTripWindowOpen, setAddTripWindowOpen] = useState(false)
 	const [toggleMenu, setToggleMenu] = useState(false)
 	const [settlements, setSettlements] = useState([])
+	const [settlementWindowOpen, setSettlementWindowOpen] = useState(false)
 	// const [debitors, setDebitors] = useState([])
 	// const [creditors, setCreditors] = useState([])
     console.log('state users expences: ',usersExpences );
@@ -86,8 +87,16 @@ export default function Home(props) {
 		getAllUsersCreditAndDebt()
 	}, [])
 
+	useEffect(() => {
+		getAllUsersCreditAndDebt()
+	}, [settlementWindowOpen])
+
 	const handleAddTripWindow = () => {
 		setAddTripWindowOpen(!addTripWindowOpen)
+	}
+
+	const handleSettlementWindow = () => {
+		setSettlementWindowOpen(!settlementWindowOpen)
 	}
 
 	// const closeTripWindow = <RiCloseLine 
@@ -138,6 +147,14 @@ export default function Home(props) {
         <>
 		<div class="container">
 		<h2 class='headline'>{currentTrip.title}</h2>
+		 
+		{!addTripWindowOpen && openTripWindow}
+		<div class='menuContainer'>
+		<h3 class={!toggleMenu && 'menuSelected'} onClick={() => {setToggleMenu(!toggleMenu)}}>Overview</h3>
+		<h3 class={toggleMenu && 'menuSelected'} onClick={() => {setToggleMenu(true)}}>All Expenses</h3>
+        </div>
+		{toggleMenu ? showAllExpences() : showOverview()}	
+		<div className='modal-wrapper'>
 		{
 			addTripWindowOpen && 			
 			<AddExpence 
@@ -145,18 +162,21 @@ export default function Home(props) {
 			refreshAllExpences={getAllExpences} 
 			closeWindow={handleAddTripWindow}	
 			/>
-		} 
-		{!addTripWindowOpen && openTripWindow}
-		<div class='menuContainer'>
-		<h3 class={!toggleMenu && 'menuSelected'} onClick={() => {setToggleMenu(!toggleMenu)}}>Overview</h3>
-		<h3 class={toggleMenu && 'menuSelected'} onClick={() => {setToggleMenu(true)}}>All Expenses</h3>
-        </div>
-		{toggleMenu ? showAllExpences() : showOverview()}	
-		<Settlement 
-		settlements={settlements}	
-		updateSettlements={getAllUsersCreditAndDebt}	
-		/>	
-		</div>		
+		}
+		{
+			settlementWindowOpen &&
+			<Settlement 
+			settlements={settlements}	
+			updateSettlements={getAllUsersCreditAndDebt}
+			closeWindow={handleSettlementWindow}	
+			settlementWindowOpen={settlementWindowOpen}
+			/>
+		}	
+		</div>	
+		</div>
+		{!settlementWindowOpen &&
+		<button className='showSettlement' onClick={handleSettlementWindow}>Settlement</button>	
+		}
         </>
 	)
 }
