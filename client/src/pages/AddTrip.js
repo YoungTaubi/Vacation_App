@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios';
 import Multiselect from 'multiselect-react-dropdown';
 import '../MultiselectDropdown.css';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/auth'
 
 
 
@@ -13,23 +14,14 @@ export default function AddTrip(props) {
 	const [participants, setParticipants] = useState([])
 	// console.log('participants state',participants);
 	const [allUsers, setAllUsers] = useState([])
-	const [userId, setUserId] = useState(null)
 
 	const storedToken = localStorage.getItem('authToken')
 
 	const navigate = useNavigate()
 
-	// Get user Id
-	const getUserId= () => {
-		axios.get(`/api/expences/user-id`, { headers: { Authorization: `Bearer ${storedToken}` } })
-		.then(res => {
-			//console.log('user Id: ', res.data);
-			setUserId(res.data)
-		})
-		.catch(err => {
-			console.log(err)
-		})
-		}
+	const { user } = useContext(AuthContext)
+
+	const userId = user._id
 
 	const getAllUsers = () => {
 		axios.get('/api/trips/users', { headers: { Authorization: `Bearer ${storedToken}` } })
@@ -99,12 +91,15 @@ export default function AddTrip(props) {
 
 	useEffect(() => {
 		getAllUsers()
-		getUserId()
 	}, [])
 
 	const showState = () => {
 		// console.log('current State', participants);
 	}
+
+	const filteredUsers = allUsers.filter(user => user._id !== userId)
+
+
 
 	useEffect(() => {
 		showState()
@@ -178,7 +173,7 @@ export default function AddTrip(props) {
 						}	
 		
 						}}	
-				options={allUsers} // Options to display in the dropdown
+				options={filteredUsers} // Options to display in the dropdown
 				// customCloseIcon={'cancel'}
 				 // Preselected value to persist in dropdown
 				onSelect={onSelect} // Function will trigger on select event

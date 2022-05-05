@@ -117,6 +117,9 @@ router.post('/', (req, res, next) => {
  // console.log('trip body: ',req.body);
   const { title, description, participants } = req.body
   const userId = req.payload._id
+  let currentUser = req.payload
+  currentUser.joining = true
+  participants.push(currentUser)
   Trip.create({ title, description, participants, owner: userId })  
     .then(trip => {
       //console.log('participants: ', participants);

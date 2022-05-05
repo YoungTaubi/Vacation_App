@@ -129,7 +129,7 @@ router.get('/:id/all-expences', (req, res, next) => {
                     // console.log('expenceCopy', expenceCopy);                    
                     allExpencesAndDoneSettlements.push(expenceCopy)
                 })
-                console.log('allExpencesAndDoneSettlements', allExpencesAndDoneSettlements);
+                // console.log('allExpencesAndDoneSettlements', allExpencesAndDoneSettlements);
                 const allExpencesAndDoneSettlementsSorted = allExpencesAndDoneSettlements.sort((a, b) => {
                     // console.log(b.updatedAt);
                     // console.log(Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
@@ -162,15 +162,16 @@ router.delete('/:id', (req, res, next) => {
 
 // get credit/debt of all trip participants  
 router.get('/:id/users-creditAndDebt', (req, res, next) => {
-    // console.log('getting all settlements');
     const tripId = req.params.id
     const userId = req.payload._id
+
+    console.log('getting all settlements', tripId);
 
     Settlement.find({trip: tripId})
     .populate('debitor')
     .populate('creditor')
     .then(settlementsFromDB => {
-        // console.log('settlements:',settlementsFromDB);
+        console.log('settlements:',settlementsFromDB);
         res.status(200).json({settlementsFromDB})
     })
     .catch(err => next(err))
