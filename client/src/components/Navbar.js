@@ -15,7 +15,7 @@ export default function Navbar() {
 	const [userId, setUserId] = useState(null)
 	const [open, setOpen] = useState(false)
 	const [navOpen, setNavOpen] = useState(false)
-	console.log('open', open);
+	// console.log('open', open);
  
 	const storedToken = localStorage.getItem('authToken')
 

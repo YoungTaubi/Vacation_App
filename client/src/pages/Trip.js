@@ -21,8 +21,8 @@ export default function Home(props) {
 	const [settlementWindowOpen, setSettlementWindowOpen] = useState(false)
 	// const [debitors, setDebitors] = useState([])
 	// const [creditors, setCreditors] = useState([])
-    console.log('state users expences: ',usersExpences );
-	console.log('allExpences state: ', allExpences);
+    // console.log('state users expences: ',usersExpences );
+	// console.log('allExpences state: ', allExpences);
 
     const { id } = useParams()
 
@@ -88,7 +88,9 @@ export default function Home(props) {
 	}, [])
 
 	useEffect(() => {
+		getAllExpencesFromUser()
 		getAllUsersCreditAndDebt()
+		getAllExpences()
 	}, [settlementWindowOpen])
 
 	const handleAddTripWindow = () => {

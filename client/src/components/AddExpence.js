@@ -23,7 +23,7 @@ export default function AddExpence(props) {
 	const [multiplier, setMultiplier] = useState({
 		// 0: 0
 	})
-	console.log('multiplier State:', multiplier );
+	// console.log('multiplier State:', multiplier );
 	//console.log('tripParticipants state', tripParticipants);
 
 	const storedToken = localStorage.getItem('authToken')
@@ -48,7 +48,7 @@ export default function AddExpence(props) {
 		axios.post(`/api/expences/${id}`, { title, amount, debitors }, { headers: { Authorization: `Bearer ${storedToken}` } })			
 			.then(response => {
 				
-				console.log('response: ',response.data)
+				// console.log('response: ',response.data)
 				setTitle('')
 				setAmount('')
 				setDebitors([])
@@ -111,7 +111,7 @@ export default function AddExpence(props) {
 		const allMultipliers = Object.entries(multiplier)	
 		let multiplierTotal = 0
 		const debitorsUpd = []
-		console.log('debitorsUpd', debitorsUpd);
+		// console.log('debitorsUpd', debitorsUpd);
 		for (let [key, value] of allMultipliers) {
 			multiplierTotal += Number(value)			
 		}
@@ -120,7 +120,7 @@ export default function AddExpence(props) {
 		//console.log('all multi: ', multiplier);
 		debitors.map((debitor) => {	
 					
-			console.log('deb id',debitor._id);
+			// console.log('deb id',debitor._id);
 	 		//console.log('debitor: ', debitor);
 			 for (let [key, value] of allMultipliers) {				
 				//console.log(key, value);
@@ -144,7 +144,7 @@ export default function AddExpence(props) {
 			//console.log('array', debitorsUpd);
 	 		// console.log(Object.keys(multiplier));
 			setDebitors(() => debitorsUpd)
-			console.log('debitorsUpd',debitorsUpd);
+			// console.log('debitorsUpd',debitorsUpd);
 			// props.refreshAllExpencesFromUser()
 			// props.refreshAllExpences()			
 			
@@ -170,7 +170,7 @@ export default function AddExpence(props) {
 	}, [])
 
 	const showDebitors = () => {
-		console.log('deb status', debitors);
+		// console.log('deb status', debitors);
 	}
 
 	useEffect(() => {
@@ -188,11 +188,11 @@ export default function AddExpence(props) {
 
 	function onRemove(selectedList, removedItem) {
 		let debitorsCopy = debitors.filter(participant => participant._id !== removedItem._id)
-		console.log('filtered:', debitorsCopy);
+		// console.log('filtered:', debitorsCopy);
 		setDebitors(debitorsCopy);
 	}
 
-	console.log('debitor State out: ', debitors)
+	// console.log('debitor State out: ', debitors)
 
 	return (
 		<>		

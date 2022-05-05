@@ -8,7 +8,7 @@ import {motion} from 'framer-motion'
 export default function TripList(props) {
 
 	const [trips, setTrips] = useState([])
-	console.log(trips)
+	// console.log(trips)
 
 	const storedToken = localStorage.getItem('authToken')
 

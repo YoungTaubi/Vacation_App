@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 
 export default function AddExpence(props) {
 
-    console.log('props',props); 
+    // console.log('props',props); 
 
    
     return (

@@ -21,16 +21,17 @@ export default function AddExpence(props) {
       // show who owe´s whom what
       // if user is in debt, user see´s whom he owe´s
       // if user has credit, user see`s whom he get´s money from
-      console.log('props', props.creditors);
-      console.log('props', props.debitors);
-      console.log('user', user);
-      console.log('tripwindow', props.settlementWindowOpen);
+      // console.log('props', props.creditors);
+      // console.log('props', props.debitors);
+      // console.log('user', user);
+      // console.log('tripwindow', props.settlementWindowOpen);
 
       const { id } = useParams()
 
       const storedToken = localStorage.getItem('authToken')
 
       const showSettlement = () => {
+            console.log('is da', props.settlements);
 
             let renderDebitors = props.settlements.map(settlemt => {
 
@@ -61,11 +62,11 @@ export default function AddExpence(props) {
                   } else if (user._id === settlemt.debitor._id) {
                         return <>
                               {settlemt.markedAsPaied ?
-                                    <div className='margin-top-20'>
+                                    <div>
                                           <h4>You payed {settlemt.creditor.name} {settlemt.amount}€</h4>
                                     </div>
                                     :
-                                    <div className='margin-top-20'>
+                                    <div>
                                           <h4>You owe {settlemt.creditor.name} {settlemt.amount}€</h4>
                                     </div>
 
@@ -178,12 +179,13 @@ export default function AddExpence(props) {
 
 
       useEffect(() => {
+            // props.updateSettlements()
             handleSettlement()
       }, [props.settlementWindowOpen])
 
-      useEffect(() => {
-            showSettlement()
-      }, [id])
+      // useEffect(() => {
+      //       showSettlement()
+      // }, [id])
 
       // useEffect(() => {
       //       if (typeof renderDebitors.debitors !== undefined &&
@@ -204,7 +206,7 @@ export default function AddExpence(props) {
                         animate={{ scale: 1, y: 1, x: 0 }}
                   >
 
-                        <div class="settlementContainer">
+                        <div class="settlementWindow">
 
                               <RiCloseLine
                                     class='closeAddExpence'
@@ -213,9 +215,11 @@ export default function AddExpence(props) {
                               />
 
                               <h2>Settlement</h2>
-
-                              {showSettlement()}
-
+                              <div className='settlementContainer'>
+                                    <div className='eachSettlement margin-top-20'>
+                                          {showSettlement()}
+                                    </div>
+                              </div>
                               {/* <button onClick={() => handleSettlement()}>Settlement</button> */}
                         </div>
                   </motion.div>

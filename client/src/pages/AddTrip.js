@@ -11,7 +11,7 @@ export default function AddTrip(props) {
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [participants, setParticipants] = useState([])
-	console.log('participants state',participants);
+	// console.log('participants state',participants);
 	const [allUsers, setAllUsers] = useState([])
 	const [userId, setUserId] = useState(null)
 
@@ -48,7 +48,7 @@ export default function AddTrip(props) {
 		// the backend
 		axios.post('/api/trips', { title, description, participants }, { headers: { Authorization: `Bearer ${storedToken}` } })
 			.then(res => {
-				console.log('res',res)
+				// console.log('res',res)
 				// reset the form
 				setTitle('')
 				setDescription('')
@@ -80,10 +80,10 @@ export default function AddTrip(props) {
 
 
 	function onSelect(selectedList, selectedItem) {
-		console.log('options',selectedItem);
+		// console.log('options',selectedItem);
 		// console.log('selectedList: ', selectedList);
 		if (selectedItem._id.toString() === userId.toString()) {
-			console.log('owner');
+			// console.log('owner');
 			setParticipants((state) => [...state, {...selectedItem, joining: true}]);
 		} else {
 			setParticipants((state) => [...state, {...selectedItem, joining: false}]);	
@@ -93,7 +93,7 @@ export default function AddTrip(props) {
 
 	function onRemove(selectedList, removedItem) {
 		let participantsCopy = participants.filter(participant => participant._id !== removedItem._id)
-		console.log('filtered:', participantsCopy);
+		// console.log('filtered:', participantsCopy);
 		setParticipants(participantsCopy);
 	}
 
@@ -103,7 +103,7 @@ export default function AddTrip(props) {
 	}, [])
 
 	const showState = () => {
-		console.log('current State', participants);
+		// console.log('current State', participants);
 	}
 
 	useEffect(() => {

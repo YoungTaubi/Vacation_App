@@ -144,7 +144,7 @@ input.addTripInput:focus {
     z-index: 3;
 }
 
-.settlementContainer {
+.settlementWindow {
     min-height: 60vh;
     max-height: fit-content;
     width: 320px;
@@ -156,6 +156,27 @@ input.addTripInput:focus {
     border-radius: 30px;
     z-index: 3;
     padding: 50px;
+}
+
+.settlementContainer {
+    max-height: 60vh;
+    min-height: 30vh;
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 5px;
+    overflow: auto;
+}
+
+.eachSettlement {
+    height: 50px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .addExpenceContainer label {
@@ -225,6 +246,7 @@ input.addTripInput:focus {
     margin: 5px;
     overflow: auto;
     z-index: 5;
+    /* box-shadow: 0 30px 30px -30px rgba(0, 0, 0, 0.2) inset, 0 -30px 30px -30px rgba(0, 0, 0, 0.2) inset; */
 }
 
 .deleteButton {
@@ -307,6 +329,8 @@ input.addTripInput:focus {
     left: 125px;
     text-align: left;
 }
+
+
 
 .margin-top-20 {
     margin-top: 20px;

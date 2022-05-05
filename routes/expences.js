@@ -120,22 +120,22 @@ router.get('/:id/all-expences', (req, res, next) => {
                 settlementsFromDB.forEach(settlement => {
                     let settlementCopy = JSON.parse(JSON.stringify(settlement))
                     settlementCopy.type = 'settlement'
-                    console.log('settlementCopy', settlementCopy);
+                    // console.log('settlementCopy', settlementCopy);
                     allExpencesAndDoneSettlements.push(settlementCopy)
                 })
                 expences.map(expence => {
                     let expenceCopy = JSON.parse(JSON.stringify(expence))
                     expenceCopy.type = 'expence'
-                    console.log('expenceCopy', expenceCopy);                    
+                    // console.log('expenceCopy', expenceCopy);                    
                     allExpencesAndDoneSettlements.push(expenceCopy)
                 })
                 console.log('allExpencesAndDoneSettlements', allExpencesAndDoneSettlements);
                 const allExpencesAndDoneSettlementsSorted = allExpencesAndDoneSettlements.sort((a, b) => {
-                    console.log(b.updatedAt);
-                    console.log(Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+                    // console.log(b.updatedAt);
+                    // console.log(Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
                     return Date.parse(a.updatedAt) - Date.parse(b.updatedAt)
                 })
-                console.log('allExpencesAndDoneSettlementsSorted', allExpencesAndDoneSettlementsSorted);
+                // console.log('allExpencesAndDoneSettlementsSorted', allExpencesAndDoneSettlementsSorted);
                 res.status(200).json({expencesAndSettlements: allExpencesAndDoneSettlements})                
             })
                       
@@ -162,6 +162,7 @@ router.delete('/:id', (req, res, next) => {
 
 // get credit/debt of all trip participants  
 router.get('/:id/users-creditAndDebt', (req, res, next) => {
+    // console.log('getting all settlements');
     const tripId = req.params.id
     const userId = req.payload._id
 
@@ -398,7 +399,7 @@ router.post('/:id/settlement', (req, res, next) => {
                     markedAsReceived: false
                 })
                 .then(createdSettlement => {
-                    console.log(createdSettlement);
+                    // console.log(createdSettlement);
                 })
                 .catch(err => next(err))
             }
@@ -438,7 +439,11 @@ router.post('/:id/settlement', (req, res, next) => {
                         // creditor.debitors.push(debitorCopy)
                         debitor.userDebt -= creditor.credit
                         if (creditor.credit !== 0) {
-                            createSettlement(creditor, debitor, creditor.credit)
+                            createSettlement(
+                                creditor, 
+                                debitor, 
+                                Math.round((creditor.credit + Number.EPSILON) * 100) / 100
+                                )
                         }
                         creditor.credit= 0
                         
@@ -458,7 +463,11 @@ router.post('/:id/settlement', (req, res, next) => {
                         // debitor.creditorId = creditor._id
                         // creditor.debitors.push(debitorCopy1
                         if (debitor.userDebt !== 0) {
-                            createSettlement(creditor, debitor, debitor.userDebt)
+                            createSettlement(
+                                creditor, 
+                                debitor, 
+                                Math.round((debitor.userDebt + Number.EPSILON) * 100) / 100
+                                )
                         }
                         debitor.userDebt = 0
                         // creditor.credit -= debitor.userDebt
@@ -478,7 +487,11 @@ router.post('/:id/settlement', (req, res, next) => {
                         // debitorCopy2.userDebt = 0
                         // creditor.debitors.push(debitorCopy2)
                         if (debitor.userDebt !== 0) {
-                            createSettlement(creditor, debitor, debitor.userDebt)
+                            createSettlement(
+                                creditor, 
+                                debitor, 
+                                Math.round((debitor.userDebt + Number.EPSILON) * 100) / 100
+                                )
                         }                        
                         creditor.credit = 0
                         debitor.userDebt = 0
@@ -581,7 +594,7 @@ router.post('/:id/settlement', (req, res, next) => {
 });
 
 router.put('/:id/markedAsPaied', (req, res) => {
-    console.log('clicked backend');
+    // console.log('clicked backend');
     const { settlementId, markedAsPaied } = req.body
     Settlement.findByIdAndUpdate(settlementId, {
         markedAsPaied: !markedAsPaied
@@ -593,7 +606,7 @@ router.put('/:id/markedAsPaied', (req, res) => {
 })
 
 router.put('/:id/markedAsReceived', (req, res) => {
-    console.log('clicked backend');
+    // console.log('clicked backend');
     const { settlementId, markedAsReceived } = req.body
     Settlement.findByIdAndUpdate(settlementId, {
         markedAsReceived: !markedAsReceived

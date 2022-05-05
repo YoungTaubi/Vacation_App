@@ -8,7 +8,7 @@ router.get('/currentUser', (req, res, next) => {
   const userId = req.payload._id
   User.findById(userId)
     .then(user => {
-      console.log('user:', user);
+      // console.log('user:', user);
       res.status(200).json(user)
     })
 });
@@ -17,7 +17,7 @@ router.get('/currentUser', (req, res, next) => {
 router.get('/users', (req, res, next) => {
   User.find()
     .then(users => {
-      console.log('users:', users);
+      // console.log('users:', users);
       res.status(200).json(users)
     })
 });
@@ -31,17 +31,17 @@ router.get('/', (req, res, next) => {
   Trip.find({ $or: [{owner: userId}, {'participants._id': userId}]})
     .populate('participants')
     .then(trips => {
-      console.log('trips',trips);
+      // console.log('trips',trips);
       const filteredStrips = []
         trips.map(trip => {
         trip.participants.map(participant => {          
           if (participant.joining === true && participant._id.toString() === userId.toString()) {
-            console.log('participant', participant );
+            // console.log('participant', participant );
             filteredStrips.push(trip)
           } 
         })
       })
-      console.log('filteredStrips', filteredStrips);
+      // console.log('filteredStrips', filteredStrips);
       res.status(200).json(filteredStrips)
     })
 });
@@ -66,12 +66,12 @@ router.get('/invites', (req, res, next) => {
         trips.map(trip => {
         trip.participants.map(participant => {          
           if (participant.joining === false && participant._id.toString() === userId.toString()) {
-            console.log('participant', participant );
+            // console.log('participant', participant );
             filteredStrips.push(trip)
           } 
         })
       })
-      console.log('filteredStrips', filteredStrips);
+      // console.log('filteredStrips', filteredStrips);
       res.status(200).json(filteredStrips)
     })
 });
@@ -80,7 +80,7 @@ router.get('/invites', (req, res, next) => {
 router.get('/:id/trip-participants', (req, res , next) => {
   const tripId = req.params.id
   const userId = req.payload._id
-  console.log('loggen in user:', userId);
+  // console.log('loggen in user:', userId);
   //console.log('trip id: ',tripId)
   Trip.findById(tripId)
     .then(trip => {
@@ -106,7 +106,7 @@ router.get('/:id/trip-participants', (req, res , next) => {
           }       
         }) 
         //console.log('users: ',users);
-        console.log('filteredusers: ',filteredUsers);
+        // console.log('filteredusers: ',filteredUsers);
         res.status(200).json(filteredUsers)
       })
     })  
@@ -163,7 +163,7 @@ router.put('/invites/:id', (req, res, next) => {
     participants
   }, { new: true })
     .then(updatedTrip => {
-      console.log('updatedTrip',updatedTrip);
+      // console.log('updatedTrip',updatedTrip);
       res.status(200).json(updatedTrip)
     })
     .catch(err => next(err))

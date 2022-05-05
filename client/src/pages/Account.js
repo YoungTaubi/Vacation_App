@@ -13,7 +13,7 @@ export default function Login() {
 	const [user, setUser] = useState({})
 	const [handleAccountWindow, setHandleAccountWindow] = useState(true)
 	//console.log('user', user);
-	console.log('email',email);
+	// console.log('email',email);
 
 	const storedToken = localStorage.getItem('authToken')
 	

@@ -18,7 +18,7 @@ const navigate = useNavigate()
 	const getUser = () => {
 	axios.get(`/api/trips/currentUser`, { headers: { Authorization: `Bearer ${storedToken}` } })
 	.then(res => {
-		console.log('user: ', res.data);
+		// console.log('user: ', res.data);
 		setCurrentUser(res.data)
 	})
 	.catch(err => {
@@ -42,7 +42,7 @@ const navigate = useNavigate()
 	const getInvites= () => {
 	axios.get(`/api/trips/invites`, { headers: { Authorization: `Bearer ${storedToken}` }})
 	.then(res => {
-	  console.log('invites: ', res.data);
+	//   console.log('invites: ', res.data);
 	  setInvites(res.data)
 	})
 	.catch(err => {
@@ -52,7 +52,7 @@ const navigate = useNavigate()
 
 	const handleSubit = (id) => {
 		const requestBody = { participants: inviteAnswer}
-		console.log('requestBody', requestBody);
+		// console.log('requestBody', requestBody);
 		axios.put(`/api/trips/invites/${id}`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` }})
 			.then(() => {
 				
@@ -71,13 +71,13 @@ const navigate = useNavigate()
 				return participants = invite.participants
 			}
 		})
-		console.log('participants',participants);
+		// console.log('participants',participants);
 		const updatedParticipants = participants.map(participant =>
 			participant._id.toString() === userId.toString() ? { ...participant, joining: true } : participant
 		);
-		console.log('participants upd', updatedParticipants );
+		// console.log('participants upd', updatedParticipants );
 		setInviteAnswer(() => updatedParticipants)
-		console.log('inviteAnswer', inviteAnswer);
+		// console.log('inviteAnswer', inviteAnswer);
 		//handleSubit(id)
 	}
 
