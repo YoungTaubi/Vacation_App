@@ -160,7 +160,7 @@ router.delete('/:id', (req, res, next) => {
   });
 
 
-// get credit/debt of all trip participants  
+// get all settlements from db  
 router.get('/:id/users-creditAndDebt', (req, res, next) => {
     const tripId = req.params.id
     const userId = req.payload._id

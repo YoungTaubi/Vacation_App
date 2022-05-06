@@ -79,17 +79,17 @@ export default function Home(props) {
         getAllExpencesFromUser()
         getAllExpences()
 		getCurrentTrip()
-		getAllUsersCreditAndDebt()
+		// getAllUsersCreditAndDebt()
     }, [id])
 
 	useEffect(() => {
 		getCurrentTrip()
-		getAllUsersCreditAndDebt()
+		// getAllUsersCreditAndDebt()
 	}, [])
 
 	useEffect(() => {
 		getAllExpencesFromUser()
-		getAllUsersCreditAndDebt()
+		// getAllUsersCreditAndDebt()
 		getAllExpences()
 	}, [settlementWindowOpen])
 
@@ -177,10 +177,7 @@ export default function Home(props) {
 		</div>	
 		</div>
 		{!settlementWindowOpen &&
-		<button style={{cursor:'pointer', 'z-index': '10'}} className='showSettlement' 
-		onClick={handleSettlementWindow}
-		onTouchEnd={handleSettlementWindow}
-		>Settlement</button>	
+		<button style={{cursor:'pointer', 'z-index': '10'}} className='showSettlement' onClick={handleSettlementWindow}>Settlement</button>	
 		}
         </>
 	)
