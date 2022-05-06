@@ -177,10 +177,14 @@ export default function AddExpence(props) {
       //       return arr
       // }
 
+      // useEffect(() => {
+      //       // props.updateSettlements()
+      //       props.updateSettlements()
+      // }, [])
+
 
       useEffect(() => {
-            // props.updateSettlements()
-            handleSettlement()
+            handleSettlement() 
       }, [props.settlementWindowOpen])
 
       // useEffect(() => {
