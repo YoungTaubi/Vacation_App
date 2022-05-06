@@ -153,7 +153,7 @@ export default function Home(props) {
 		<div class="container">
 		<h2 class='headline'>{currentTrip.title}</h2>
 		 
-		{!addTripWindowOpen && openTripWindow}
+		{!settlementWindowOpen && !addTripWindowOpen && openTripWindow}
 		<div class='menuContainer'>
 		<h3 class={!toggleMenu && 'menuSelected'} onClick={() => {setToggleMenu(!toggleMenu)}}>Overview</h3>
 		<h3 class={toggleMenu && 'menuSelected'} onClick={() => {setToggleMenu(true)}}>All Expenses</h3>
@@ -179,7 +179,7 @@ export default function Home(props) {
 		}	
 		</div>	
 		</div>
-		{!settlementWindowOpen && !settlementWindowOpen && 
+		{!settlementWindowOpen && !addTripWindowOpen && 
 		<button style={{cursor:'pointer', 'z-index': '10'}} className='showSettlement' onClick={handleSettlementWindow}>Settlement</button>	
 		}
         </>
