@@ -177,10 +177,10 @@ export default function Home(props) {
 		</div>	
 		</div>
 		{!settlementWindowOpen &&
-		<button style={{cursor:'pointer'}} className='showSettlement' 
+		<div style={{cursor:'pointer'}} className='showSettlement' 
 		onClick={handleSettlementWindow}
 		onTouchEnd={handleSettlementWindow}
-		>Settlement</button>	
+		>Settlement</div>	
 		}
         </>
 	)
