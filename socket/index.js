@@ -12,6 +12,8 @@ let onlineUsers = []
 
 console.log(onlineUsers);
 
+console.log('test');
+
 const addNewUser = (userId, userName, socketId) => {
     !onlineUsers.some(user => user.userId === userId) &&
         onlineUsers.push({ userId, userName, socketId })
