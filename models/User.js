@@ -19,6 +19,7 @@ const userSchema = new Schema(
         ref: 'Trip',
       },
     ],
+    notificationState: Boolean
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

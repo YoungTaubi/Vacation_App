@@ -1,0 +1,26 @@
+.notificationWindow {
+    min-height: 30vh;
+    max-height: fit-content;
+    width: 320px;
+    /* position: absolute; */
+    background-color: #CCFFBD;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 30px;
+    z-index: 15;
+    padding: 50px;
+}
+
+.notificationWindowContainer {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+}

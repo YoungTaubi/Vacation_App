@@ -84,6 +84,7 @@ input.addTripInput:focus {
     background-color: #40394A;
     color: white;
     font-weight:bolder ;
+    cursor: pointer;
 }
 
 .addExpence {
@@ -259,6 +260,7 @@ input.addTripInput:focus {
     background-color: #40394A;
     color: white;
     font-weight:bolder ;
+    cursor: pointer;
 }
 
 .allExpencesContainer H4 {

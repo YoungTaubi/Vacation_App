@@ -35,7 +35,7 @@ router.get('/', (req, res, next) => {
       const filteredStrips = []
         trips.map(trip => {
         trip.participants.map(participant => {          
-          if (participant.joining === true && participant._id.toString() === userId.toString()) {
+          if (participant?.joining === true && participant?._id.toString() === userId.toString()) {
             // console.log('participant', participant );
             filteredStrips.push(trip)
           } 
@@ -62,10 +62,11 @@ router.get('/invites', (req, res, next) => {
   Trip.find({ $and: [{'participants._id': userId}, {'participants.joining': false}, {owner: { $ne: userId }}] })
     .populate('owner')
     .then(trips => {
+      console.log('trips 1', trips);
       const filteredStrips = []
         trips.map(trip => {
         trip.participants.map(participant => {          
-          if (participant.joining === false && participant._id.toString() === userId.toString()) {
+          if (participant?.joining === false && participant?._id.toString() === userId.toString()) {
             // console.log('participant', participant );
             filteredStrips.push(trip)
           } 

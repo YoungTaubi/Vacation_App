@@ -80,7 +80,7 @@ router.post('/login', (req, res, next) => {
 					process.env.JWT_SECRET,
 					{ algorithm: 'HS256', expiresIn: '12h' }
 				)
-				res.status(200).json({ authToken })
+				res.status(200).json({ authToken, foundUser })
 			} else {
 				res.status(401).json({ message: 'Unable to authenticate' })
 			}

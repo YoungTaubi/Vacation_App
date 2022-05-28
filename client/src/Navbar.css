@@ -1,75 +1,76 @@
 .navbar {
-    padding: 90px 0 0 50px;
-    margin: 0;
-    background-color: #CCFFBD;
-    min-height: 100%;
-    max-height: fit-content;
-    width: 85%;
-    position: absolute;
-    font-size: 1.7em;
-    z-index: 11;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    
+  padding: 90px 0 0 50px;
+  margin: 0;
+  background-color: #ccffbd;
+  min-height: 100%;
+  max-height: fit-content;
+  width: 85%;
+  position: absolute;
+  font-size: 1.7em;
+  z-index: 11;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .sublist {
-    padding-left: 70px;
-    position: relative;
-    
-    
+  padding-left: 70px;
+  position: relative;
 }
 
 .burgerMenu {
-    left: 40px;
-    margin: 0 !important;
-    padding: 30px 0;
-    float: left;
-    position: absolute;
-    z-index: 12;
-    color: #40394A;
+  left: 40px;
+  margin: 0 !important;
+  padding: 30px 0;
+  float: left;
+  position: absolute;
+  z-index: 12;
+  color: #40394a;
 }
 
 li {
-    list-style: none;
-    text-align: left;
-    padding: 5px 0;
-    color: #40394A;
+  list-style: none;
+  text-align: left;
+  padding: 5px 0;
+  color: #40394a;
 }
 
 li :hover {
-    color: white;
+  color: white;
 }
 
 a {
-    text-decoration: none;
-    color: #40394A;
+  text-decoration: none;
+  color: #40394a;
 }
 
 a :hover {
-    color: white;
+  color: white;
 }
 
 .background {
-    position: fixed;
-    /* margin: 0; */
-    padding: 0;
-    width: 100%;
-    height:100%;
-    background-color: #40394A;
-    opacity: 0.85;
-    z-index: 0;
-    bottom: 0;
-    left: 0
+  position: fixed;
+  /* margin: 0; */
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #40394a;
+  opacity: 0.85;
+  z-index: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .logo2 {
-    width: 150px;
-    margin-top: 20px;
-    margin-left: 0;
-    margin-bottom: 40px;
-   }
+  width: 150px;
+  margin-top: 20px;
+  margin-left: 0;
+  margin-bottom: 40px;
+}
 
-
-
+.notification {
+    width: 20px;
+    height: 20px;
+    background-color: #40394a;
+    border-radius: 2em;
+}

@@ -1,6 +1,7 @@
 // import { calcLength } from 'framer-motion'
 import React, { useEffect, useState, useContext } from 'react'
 import { AuthContext } from '../context/auth'
+import { SocketContext } from '../context/socket';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion'
@@ -16,6 +17,7 @@ import Switch from "../components/Switch";
 export default function AddExpence(props) {
 
       const { user } = useContext(AuthContext)
+      const { sendNotification } = useContext(SocketContext)
       // const [renderDebitors, setRenderDebitors] = useState({})
       // const [renderCreditors, setRenderCreditors] = useState({})
       // show who owe´s whom what
@@ -31,7 +33,7 @@ export default function AddExpence(props) {
       const storedToken = localStorage.getItem('authToken')
 
       const showSettlement = () => {
-            console.log('is da', props.settlements);
+            // console.log('is da', props.settlements);
 
             let renderDebitors = props.settlements.map(settlemt => {
 
@@ -48,6 +50,9 @@ export default function AddExpence(props) {
                                                       handleChange={handleMarkedAsReceived}
                                                       id={settlemt._id}
                                                       paied={settlemt.markedAsReceived}
+                                                      receiverId={settlemt.debitor._id}
+                                                      receiverName={settlemt.debitor.name}
+                                                      type={3}
                                                 />
                                           </div>
                                     </>
@@ -74,15 +79,18 @@ export default function AddExpence(props) {
 
                               <div className='switch-container'>
                                     {settlemt.markedAsPaied ?
-                                          <p>Mark as not paied</p>
+                                          <p>Mark as not paid</p>
                                           :
-                                          <p>Mark as paied</p>
+                                          <p>Mark as paid</p>
                                     }
                                     <Switch
                                           checked={settlemt.markedAsPaied}
                                           handleChange={handleMarkedAsPaied}
                                           id={settlemt._id}
                                           paied={settlemt.markedAsPaied}
+                                          receiverId={settlemt.creditor._id}
+                                          receiverName={settlemt.creditor.name}
+                                          type={2}
                                     />
                               </div>
                         </>
@@ -100,18 +108,20 @@ export default function AddExpence(props) {
       //   const initialSelectedIndex = options.findIndex(({value}) => value === "true");
 
       const handleSettlement = () => {
-            console.log('settlement');
+            // console.log('settlement');
             const requestBody = { test: 'test' }
             axios.post(`api/expences/${id}/settlement`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
       }
 
-      const handleMarkedAsPaied = (settlementId, markedAsPaied) => {
+      const handleMarkedAsPaied = (settlementId, markedAsPaied, receiverId, receiverName, type) => {
             const requestBody = {
                   settlementId: settlementId,
                   markedAsPaied: markedAsPaied
             }
             axios.put(`api/expences/${id}/markedAsPaied`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
             props.updateSettlements()
+            console.log('sendNotification', receiverId, receiverName, type);
+            !markedAsPaied && sendNotification(receiverId, receiverName, type)
             // showSettlement()
             // if (renderDebitors.userIsCreditor) {
             //       renderDebitors.debitors.forEach(debitor => {
@@ -122,14 +132,15 @@ export default function AddExpence(props) {
             // }
       }
 
-      const handleMarkedAsReceived = (settlementId, markedAsReceived) => {
+      const handleMarkedAsReceived = (settlementId, markedAsReceived, receiverrId, receiverrName, type) => {
             const requestBody = {
                   settlementId: settlementId,
                   markedAsReceived: markedAsReceived
             }
 
             axios.put(`api/expences/${id}/markedAsReceived`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
-
+            console.log('sendNotification', receiverrId, receiverrName, type);
+            sendNotification(receiverrId, receiverrName, type)
             setTimeout(() => props.updateSettlements(), 1000)
       }
 
@@ -184,7 +195,7 @@ export default function AddExpence(props) {
 
 
       useEffect(() => {
-            handleSettlement() 
+            handleSettlement()
       }, [props.settlementWindowOpen])
 
       // useEffect(() => {

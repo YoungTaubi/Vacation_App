@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { AuthContext } from '../context/auth'
+import { SocketContext } from '../context/socket'
 import '../Login.css';
 import splitify_logo from '../splitify_logo.png'
 
@@ -14,6 +15,7 @@ export default function Login() {
 	const navigate = useNavigate()
 
 	const { storeToken, verifyStoredToken } = useContext(AuthContext)
+	const { addNewUser } = useContext(SocketContext)
 
 	const handleSubmit = e => {
 		e.preventDefault()
@@ -23,10 +25,12 @@ export default function Login() {
 				// redirect to projects
 				console.log('i have a token mothafukkas')
 				const token = response.data.authToken
+				const user = response.data.foundUser
 				//console.log(response);
 				// store the token
 				storeToken(token)
-				verifyStoredToken()				
+				addNewUser(user)	
+				verifyStoredToken()							
 				.then(() => {
 					// redirect to projects
 					navigate('/')

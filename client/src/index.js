@@ -5,11 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProviderWrapper } from './context/auth'
+import { SocketProviderWrapper } from './context/socket'
 
 ReactDOM.render(
   <Router>
     <AuthProviderWrapper>
-      <App />
+      <SocketProviderWrapper>
+        <App />
+      </SocketProviderWrapper>
     </AuthProviderWrapper>
   </Router>,
   document.getElementById('root')

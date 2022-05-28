@@ -22,6 +22,9 @@ const { isAuthenticated } = require('./middleware/jwt')
 
 // 👇 Start handling routes here
 // Contrary to the views version, all routes are controlled from the routes/index.js
+const notification = require("./routes/notification");
+app.use("/api/notification", isAuthenticated, notification);
+
 const trips = require("./routes/trips");
 app.use("/api/trips", isAuthenticated, trips);
 

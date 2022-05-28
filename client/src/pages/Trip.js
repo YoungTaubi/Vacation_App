@@ -43,7 +43,7 @@ export default function Home(props) {
 	const getAllUsersCreditAndDebt = () => {
 		axios.get(`/api/expences/${id}/users-creditAndDebt`, { headers: { Authorization: `Bearer ${storedToken}` } })
 		.then(res => {
-			console.log('CreditAndDebt: ', res.data);
+			// console.log('CreditAndDebt: ', res.data);
 			setSettlements(res.data.settlementsFromDB)
 			// setCreditors(res.data.creditors)
 			// setDebitors(res.data.debitors)
@@ -180,7 +180,7 @@ export default function Home(props) {
 		</div>	
 		</div>
 		{!settlementWindowOpen && !addTripWindowOpen && 
-		<button style={{cursor:'pointer', 'z-index': '10'}} className='showSettlement' onClick={handleSettlementWindow}>Settlement</button>	
+		<button style={{cursor:'pointer', zIndex: '10'}} className='showSettlement' onClick={handleSettlementWindow}>Settlement</button>	
 		}
         </>
 	)

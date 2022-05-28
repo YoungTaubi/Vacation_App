@@ -4,7 +4,7 @@ import Multiselect from 'multiselect-react-dropdown';
 import '../MultiselectDropdown.css';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/auth'
-
+import { SocketContext } from '../context/socket';
 
 
 export default function AddTrip(props) {
@@ -20,6 +20,7 @@ export default function AddTrip(props) {
 	const navigate = useNavigate()
 
 	const { user } = useContext(AuthContext)
+	const { sendNotification } = useContext(SocketContext)
 
 	const userId = user._id
 
@@ -48,6 +49,9 @@ export default function AddTrip(props) {
 				navigate(`/${res.data._id}`)
 			})
 			.catch(err => console.log(err))
+		participants.forEach(participant => {
+			sendNotification(participant._id, participant.name, 1)
+		})
 		// reset the form
 		setTitle('')
 		setDescription('')
