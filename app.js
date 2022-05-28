@@ -54,3 +54,4 @@ require("./error-handling")(app);
 
 module.exports = app;
 
+console.log('test');
