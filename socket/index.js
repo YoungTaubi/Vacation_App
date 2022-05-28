@@ -6,6 +6,8 @@ const io = new Server({
     }
 })
 
+console.log('test');
+
 let onlineUsers = []
 
 console.log(onlineUsers);
