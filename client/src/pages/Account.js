@@ -7,6 +7,8 @@ import EditAccount from '../components/EditAccount'
 
 export default function Login() {
 
+	console.log('test');
+
 	//const [user, setUser] = useState({})
 	const [name, setName] = useState('')
     const [email, setEmail] = useState('')
