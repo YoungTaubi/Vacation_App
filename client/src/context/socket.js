@@ -46,7 +46,7 @@ function SocketProviderWrapper(props) {
     }
 
     const addNewUser = (user) => {
-        setSocket(io('http://myvacation-app.herokuapp.com/'))
+        setSocket(io('http://myvacation-app.herokuapp.com'))
         // console.log('isLoggedIn', isLoggedIn);
         socket.emit('newUser', user._id, user._name)
         setSocketUser(user)
@@ -73,7 +73,7 @@ function SocketProviderWrapper(props) {
 
 
     useEffect(() => {
-      setSocket(io('http://myvacation-app.herokuapp.com/'))
+      setSocket(io('http://myvacation-app.herokuapp.com'))
       getSocketUser()
     //   console.log('socketUser', socketUser);
     }, [])

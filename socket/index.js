@@ -2,7 +2,7 @@ import { Server } from 'socket.io';
 
 const io = new Server({
     cors: {
-        origin: "http://myvacation-app.herokuapp.com/"
+        origin: "http://myvacation-app.herokuapp.com"
     }
 })
 
@@ -71,7 +71,7 @@ io.on('connection', (socket) => {
     })
 })
 
-io.listen('http://myvacation-app.herokuapp.com/')
+io.listen('http://myvacation-app.herokuapp.com')
 
 
 
