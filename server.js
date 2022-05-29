@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
     })
 })
 
-io.listen(5000 || 'https://myvacation-app.herokuapp.com')
+io.listen(5000 || 'http://myvacation-app.herokuapp.com')
 
 
 
