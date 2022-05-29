@@ -1,23 +1,28 @@
 const app = require("./app");
+const socket = require('socket.io')
+const cors = require('cors')
 
 // ℹ️ Sets the PORT for our app to have access to it. If no env has been set, we hard code it to 3000
 const PORT = process.env.PORT || 5005;
+const SOCKET_PORT = process.env.SOCKET_PORT || 5000;
 
-import { Server } from 'socket.io';
 
-const io = new Server({
+
+const server = app.listen(SOCKET_PORT, () => {
+  console.log(`Server listening on port http://localhost:${PORT}`);
+});
+
+const io = socket(server, {
     cors: {
         origin: "http://myvacation-app.herokuapp.com"
     }
 })
 
-console.log('test');
 
 let onlineUsers = []
 
 console.log(onlineUsers);
 
-console.log('test');
 
 const addNewUser = (userId, userName, socketId) => {
     !onlineUsers.some(user => user.userId === userId) &&
@@ -76,7 +81,7 @@ io.on('connection', (socket) => {
     })
 })
 
-io.listen('http://myvacation-app.herokuapp.com')
+// io.listen('http://myvacation-app.herokuapp.com')
 
 
 
