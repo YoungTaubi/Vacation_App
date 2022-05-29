@@ -8,7 +8,7 @@ const SOCKET_PORT = process.env.SOCKET_PORT || 5000;
 
 
 
-const server = app.listen(SOCKET_PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server listening on port http://localhost:${PORT}`);
 });
 
@@ -87,6 +87,6 @@ io.on('connection', (socket) => {
 
 console.log('This is socket');
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server listening on port http://localhost:${PORT}`);
+// });
