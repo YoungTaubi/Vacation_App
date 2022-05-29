@@ -6,7 +6,9 @@ const cors = require('cors')
 const PORT = process.env.PORT || 5005;
 const SOCKET_PORT = process.env.SOCKET_PORT || 5000;
 
-
+app.use(cors({
+  origin: "https://myvacation-app.herokuapp.com"
+}))
 
 const server = app.listen(PORT, () => {
   console.log(`Server listening on port http://localhost:${PORT}`);
