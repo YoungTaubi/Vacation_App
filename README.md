@@ -6,7 +6,7 @@ Splitify is a vacation split app designed to help keep track of finances.
 
 # How does it work?
 
-<div style="display: flex; flex-direction: column; width: 800px; height: fit-content; margin: 20px 0">
+<div style="display: flex; flex-direction: column; width: 465px; height: fit-content; margin: 20px 0">
 
 <!-- Block 00 -->
 
