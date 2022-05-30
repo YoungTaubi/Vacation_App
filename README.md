@@ -24,11 +24,11 @@ Splitify is a vacation split app designed to help keep track of finances.
 
 <div style="display: flex; justify-content: flex-end">
 
+<img src="./readme_files/splitify-how-to-01.gif" height="500" />
+
 <div style="display: flex; justify-content: center; align-items: center; heigth: 500px">
 <h3 style="margin: 30px">Create a new trip and add all fellow travelers.</h3>
 </div>
-
-<img src="./readme_files/splitify-how-to-01.gif" height="500" />
 
 </div>
 
@@ -48,11 +48,11 @@ Splitify is a vacation split app designed to help keep track of finances.
 
 <div style="display: flex; justify-content: flex-end">
 
+<img src="./readme_files/splitify-how-to-03.gif" height="500" />
+
 <div style="display: flex; justify-content: center; align-items: center; heigth: 500px">
 <h3 style="margin: 30px">After accepting the invitation, all travelers can create new expenses. The exact breakdown of the expenses can be divided into shares, for example if a person in the restaurant ordered more.</h3>
 </div>
-
-<img src="./readme_files/splitify-how-to-03.gif" height="500" />
 
 </div>
 
@@ -72,11 +72,11 @@ Splitify is a vacation split app designed to help keep track of finances.
 
 <div style="display: flex; justify-content: flex-end">
 
+<img src="./readme_files/splitify-how-to-05.gif" height="500" />
+
 <div style="display: flex; justify-content: center; align-items: center; heigth: 500px">
 <h3 style="margin: 30px">Once a person has transferred the amount owed, they can mark it as paid.</h3>
 </div>
-
-<img src="./readme_files/splitify-how-to-05.gif" height="500" />
 
 </div>
 
