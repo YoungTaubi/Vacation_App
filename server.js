@@ -4,7 +4,7 @@ const socket = require('socket.io')
 
 // ℹ️ Sets the PORT for our app to have access to it. If no env has been set, we hard code it to 3000
 const PORT = process.env.PORT || 5005;
-const SOCKET_PORT = process.env.SOCKET_PORT || 5000;
+
 
 
 
@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
     })
 })
 
-io.listen(5000 || 'https://myvacation-app.herokuapp.com')
+// io.listen(5000 || 'https://myvacation-app.herokuapp.com')
 
 
 
