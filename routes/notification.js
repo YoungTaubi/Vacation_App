@@ -6,10 +6,10 @@ router.put('/updateNotification/true', (req, res, next) => {
     User.findByIdAndUpdate(receiverId, {
         notificationState: true
     }, { new: true })
-    .then(updatedUser => {
-      res.status(200).json(updatedUser)
-    })
-    .catch(err => next(err))
+        .then(updatedUser => {
+            res.status(200).json(updatedUser)
+        })
+        .catch(err => next(err))
 });
 
 router.put('/updateNotification/false', (req, res, next) => {
@@ -17,10 +17,10 @@ router.put('/updateNotification/false', (req, res, next) => {
     User.findByIdAndUpdate(userId, {
         notificationState: false
     }, { new: true })
-    .then(updatedUser => {
-      res.status(200).json(updatedUser)
-    })
-    .catch(err => next(err))
+        .then(updatedUser => {
+            res.status(200).json(updatedUser)
+        })
+        .catch(err => next(err))
 });
 
 router.get('/', (req, res, next) => {
@@ -29,7 +29,7 @@ router.get('/', (req, res, next) => {
         .then(user => {
             res.status(200).json(user);
         })
-        .catch(err => next(err))   
+        .catch(err => next(err))
 });
 
 

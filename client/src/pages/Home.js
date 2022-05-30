@@ -11,7 +11,7 @@ export default function Home() {
 	const [invites, setInvites] = useState([])
 	const [currentUser, setCurrentUser] = useState(null)
 
-	
+
 	const getUser = () => {
 		axios.get(`/api/trips/currentUser`, { headers: { Authorization: `Bearer ${storedToken}` } })
 			.then(res => {

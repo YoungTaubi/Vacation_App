@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
@@ -26,7 +25,7 @@ function App() {
   const setZindex = () => {
     if (!notificationWindow) {
       return '-1'
-    } 
+    }
   }
 
 
@@ -41,7 +40,7 @@ function App() {
   return (
     <div className="App">
 
-      <div className='notificationWindowContainer' style={{zIndex: setZindex()}}>
+      <div className='notificationWindowContainer' style={{ zIndex: setZindex() }}>
         {
           notificationWindow &&
           <Notification

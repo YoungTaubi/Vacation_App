@@ -11,12 +11,6 @@ router.post('/signup', (req, res, next) => {
 		res.status(400).json({ message: 'Provide email, password and name' })
 		return
 	}
-	// validate the email address
-	// const emailValid = email.includes('@')
-	// if (!emailValid) {
-	// 	res.status(400).json({ message: 'Provide a valid email address' })
-	// 	return
-	// }
 	if (password.length < 4) {
 		res.status(400).json({ message: 'Password has to be 4 chars min' })
 		return
@@ -37,19 +31,15 @@ router.post('/signup', (req, res, next) => {
 				.then(createdUser => {
 					const { email, name, _id } = createdUser
 					const payload = { email, name, _id }
-					//res.status(201).json({ user: user })
 
-					//const { _id, email, name } = foundUser
-					//const payload = { _id, email, name }
-					
 					// create the json web token
 					const authToken = jwt.sign(
-					payload,
-					process.env.JWT_SECRET,
-					{ algorithm: 'HS256', expiresIn: '12h' }
-				)
-				res.status(201).json({ user: payload, authToken })
-					
+						payload,
+						process.env.JWT_SECRET,
+						{ algorithm: 'HS256', expiresIn: '12h' }
+					)
+					res.status(201).json({ user: payload, authToken })
+
 				})
 				.catch(err => {
 					console.log(err)

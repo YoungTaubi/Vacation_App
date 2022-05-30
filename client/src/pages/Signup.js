@@ -28,7 +28,7 @@ export default function Signup() {
 						// redirect to home
 						navigate('/')
 					})
-				
+
 			})
 			.catch(err => {
 				const errorDescription = err.response.data.message
@@ -43,24 +43,24 @@ export default function Signup() {
 
 	return (
 		<>
-		<div class='backgroundLogin'>
-		<img class='logo' src={splitify_logo} alt='logo'/>
-			<h2 class='headline2'>Signup</h2>
-			<form class='loginContaier' onSubmit={handleSubmit}>
-				<label htmlFor="email">Email: </label>
-				<input class='addTripInput' type="text" value={email} onChange={handleEmail} />
-				<label htmlFor="password">Password: </label>
-				<input class='addTripInput' type="password" value={password} onChange={handlePassword} />
-				<label htmlFor="name">Name: </label>
-				<input class='addTripInput' type="text" value={name} onChange={handleName} />
-				<button class='submitButton' type="submit">Sign Up</button>
-			</form>
+			<div class='backgroundLogin'>
+				<img class='logo' src={splitify_logo} alt='logo' />
+				<h2 class='headline2'>Signup</h2>
+				<form class='loginContaier' onSubmit={handleSubmit}>
+					<label htmlFor="email">Email: </label>
+					<input class='addTripInput' type="text" value={email} onChange={handleEmail} />
+					<label htmlFor="password">Password: </label>
+					<input class='addTripInput' type="password" value={password} onChange={handlePassword} />
+					<label htmlFor="name">Name: </label>
+					<input class='addTripInput' type="text" value={name} onChange={handleName} />
+					<button class='submitButton' type="submit">Sign Up</button>
+				</form>
 
-			{errorMessage && <h5>{errorMessage}</h5>}
+				{errorMessage && <h5>{errorMessage}</h5>}
 
-			<h3>Already have an account?</h3>
-			<Link to='/login'>Login</Link>
-		</div>
+				<h3>Already have an account?</h3>
+				<Link to='/login'>Login</Link>
+			</div>
 		</>
 	)
 }

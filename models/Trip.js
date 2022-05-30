@@ -21,7 +21,6 @@ const tripSchema = new Schema({
 	],
 	expences: [
 		{
-			// type: String
 			type: Schema.Types.ObjectId,
 			ref: 'Expence'
 		}

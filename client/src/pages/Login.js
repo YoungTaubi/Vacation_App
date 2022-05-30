@@ -22,20 +22,17 @@ export default function Login() {
 		const requestBody = { email, password }
 		axios.post('/api/auth/login', requestBody)
 			.then(response => {
-				// redirect to projects
 				console.log('i have a token mothafukkas')
 				const token = response.data.authToken
 				const user = response.data.foundUser
-				//console.log(response);
 				// store the token
 				storeToken(token)
-				addNewUser(user)	
-				verifyStoredToken()							
-				.then(() => {
-					// redirect to projects
-					navigate('/')
-				})
-				
+				addNewUser(user)
+				verifyStoredToken()
+					.then(() => {
+						navigate('/')
+					})
+
 			})
 			.catch(err => {
 				const errorDescription = err.response.data.message
@@ -48,22 +45,22 @@ export default function Login() {
 
 	return (
 		<>
-		<div class='backgroundLogin'>
-			<img class='logo' src={splitify_logo} alt='logo'/>
-			<h2 class='headline2'>Login</h2>
-			<form class='loginContaier' onSubmit={handleSubmit}>
-				<label htmlFor="email">Email: </label>
-				<input class='addTripInput' type="text" value={email} onChange={handleEmail} />
-				<label htmlFor="password">Password: </label>
-				<input class='addTripInput' type="password" value={password} onChange={handlePassword} />
-				<button class='submitButton' type="submit">Log In</button>
-			</form>
+			<div class='backgroundLogin'>
+				<img class='logo' src={splitify_logo} alt='logo' />
+				<h2 class='headline2'>Login</h2>
+				<form class='loginContaier' onSubmit={handleSubmit}>
+					<label htmlFor="email">Email: </label>
+					<input class='addTripInput' type="text" value={email} onChange={handleEmail} />
+					<label htmlFor="password">Password: </label>
+					<input class='addTripInput' type="password" value={password} onChange={handlePassword} />
+					<button class='submitButton' type="submit">Log In</button>
+				</form>
 
-			{errorMessage && <h5>{errorMessage}</h5>}
+				{errorMessage && <h5>{errorMessage}</h5>}
 
-			<h3>Don't have an account?</h3>
-			<Link to='/signup'>Signup</Link>
-		</div>
+				<h3>Don't have an account?</h3>
+				<Link to='/signup'>Signup</Link>
+			</div>
 		</>
 	)
 }

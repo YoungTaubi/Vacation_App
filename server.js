@@ -1,37 +1,18 @@
 const app = require("./app");
 const socket = require('socket.io')
-// const cors = require('cors')
 
 // ℹ️ Sets the PORT for our app to have access to it. If no env has been set, we hard code it to 3000
 const PORT = process.env.PORT || 5005;
 
-
-
-
 const server = app.listen(PORT, () => {
-  console.log(`Server listening on port http://localhost:${PORT}`);
+    console.log(`Server listening on port http://localhost:${PORT}`);
 });
 
-// const server = require('http').Server(app)
-
-// const io = socket(server, {
-//     cors: {
-//         origin: "https://myvacation-app.herokuapp.com"
-//     }
-// })
-
 const io = socket(server);
-
-// const io = module.exports.io = require('socket.io')(server)
-
-// server.listen(PORT, () => {
-//   console.log(`Server listening on port http://localhost:${PORT}`);
-// })
 
 let onlineUsers = []
 
 console.log(onlineUsers);
-
 
 const addNewUser = (userId, userName, socketId) => {
     !onlineUsers.some(user => user.userId === userId) &&
@@ -59,21 +40,21 @@ io.on('connection', (socket) => {
     })
 
     socket.on('sendNotification', ({
-         senderId,
-         senderName,
-         receiverId,
-         receiverName, 
-         type
-     }) => {
-         console.log('notification from ',senderName ,'to ',receiverName);
-         const receiver = getUser(receiverId)
-         io.to(receiver?.socketId).emit('getNotification', {
+        senderId,
+        senderName,
+        receiverId,
+        receiverName,
+        type
+    }) => {
+        console.log('notification from ', senderName, 'to ', receiverName);
+        const receiver = getUser(receiverId)
+        io.to(receiver?.socketId).emit('getNotification', {
             senderId,
-            senderName, 
+            senderName,
             receiverId,
-            receiverName, 
+            receiverName,
             type
-         })
+        })
     })
 
     socket.on('logoutUser', (userId) => {
@@ -81,7 +62,7 @@ io.on('connection', (socket) => {
         logoutUser(userId)
         console.log('onlineUsers from logout', onlineUsers);
     })
-    
+
 
     socket.on('disconnect', () => {
         console.log('someone has left');
@@ -90,12 +71,4 @@ io.on('connection', (socket) => {
     })
 })
 
-// io.listen(5000 || 'https://myvacation-app.herokuapp.com')
 
-
-
-console.log('This is socket');
-
-// app.listen(PORT, () => {
-//   console.log(`Server listening on port http://localhost:${PORT}`);
-// });

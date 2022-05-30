@@ -5,103 +5,89 @@ import { io } from 'socket.io-client'
 
 const SocketContext = React.createContext()
 
-function SocketProviderWrapper(props) {  
+function SocketProviderWrapper(props) {
 
-    
-    
     const [socket, setSocket] = useState(null)
     const [socketUser, setSocketUser] = useState(null)
     const [notificationContent, setNotificationContent] = useState({})
     const [notification, setNotification] = useState(false)
 
-    // console.log('socket', socket);
-
     const storedToken = localStorage.getItem('authToken')
 
     const getSocketUser = () => {
         axios.get('/api/trips/currentUser', { headers: { Authorization: `Bearer ${storedToken}` } })
-        .then(res => {
-            setSocketUser(res.data)
-        })
-    } 
+            .then(res => {
+                setSocketUser(res.data)
+            })
+    }
 
     const sendNotification = (receiverId, receiverName, type) => {
-        // console.log('sending notification to:', receiverName,'from', socketUser._id);
         socket.emit('sendNotification', {
-           senderId: socketUser._id,
-           senderName: socketUser.name,
-           receiverId,
-           receiverName,
-           type
+            senderId: socketUser._id,
+            senderName: socketUser.name,
+            receiverId,
+            receiverName,
+            type
         })
-        const requestBody = {receiverId}
-        axios.put('/api/notification/updateNotification/true', requestBody,{ headers: { Authorization: `Bearer ${storedToken}` } })
-        .then(() => {
+        const requestBody = { receiverId }
+        axios.put('/api/notification/updateNotification/true', requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
+            .then(() => {
 
-        })
-        .catch(err => {
-            const errorDescription = err.response.data.message
-            console.log(errorDescription);
-        })
+            })
+            .catch(err => {
+                const errorDescription = err.response.data.message
+                console.log(errorDescription);
+            })
     }
 
     const addNewUser = (user) => {
         setSocket(io('http://myvacation-app.herokuapp.com'))
-        // console.log('isLoggedIn', isLoggedIn);
         socket.emit('newUser', user._id, user._name)
         setSocketUser(user)
-        // console.log('new user from add new user: ', userName);
     }
 
     const deleteSocketUser = userId => {
-        //socket.disconnect()
         socket?.emit('logoutUser', userId)
-        // console.log('deleteSocketUser');
     }
 
     const setNotificationStateFalse = () => {
-		axios.put('/api/notification/updateNotification/false', { headers: { Authorization: `Bearer ${storedToken}` } })
-        .then(() => {
+        axios.put('/api/notification/updateNotification/false', { headers: { Authorization: `Bearer ${storedToken}` } })
+            .then(() => {
 
-        })
-        .catch(err => {
-            const errorDescription = err.response.data.message
-            console.log(errorDescription);
-        })
-		setNotification(false)
-	} 
+            })
+            .catch(err => {
+                const errorDescription = err.response.data.message
+                console.log(errorDescription);
+            })
+        setNotification(false)
+    }
 
 
     useEffect(() => {
-      setSocket(io('http://myvacation-app.herokuapp.com'))
-      getSocketUser()
-    //   console.log('socketUser', socketUser);
+        setSocket(io('http://myvacation-app.herokuapp.com'))
+        getSocketUser()
     }, [])
-  
+
     useEffect(() => {
         socket?.emit('newUser', socketUser?._id, socketUser?.name)
-        //console.log('new user: ', socketUser?.name);
     }, [socket, socketUser])
 
-    useEffect(() => {
-        console.log(socketUser);
-    }, [socketUser])    
 
-	return (
-		<SocketContext.Provider value={{ 
-            sendNotification, 
-            socket, 
-            deleteSocketUser, 
-            addNewUser, 
+    return (
+        <SocketContext.Provider value={{
+            sendNotification,
+            socket,
+            deleteSocketUser,
+            addNewUser,
             notificationContent,
             setNotificationContent,
-            notification, 
-            setNotification, 
+            notification,
+            setNotification,
             setNotificationStateFalse
-            }}>
-			{props.children}
-		</SocketContext.Provider>
-	)
+        }}>
+            {props.children}
+        </SocketContext.Provider>
+    )
 }
 
 export { SocketProviderWrapper, SocketContext }

@@ -18,16 +18,12 @@ export default function Navbar() {
 	const [userId, setUserId] = useState(null)
 	const [open, setOpen] = useState(false)
 	const [navOpen, setNavOpen] = useState(false)
-	// console.log('open', open);
 
 	const storedToken = localStorage.getItem('authToken')
-
-
 
 	const getUserId = () => {
 		axios.get(`/api/expences/user-id`, { headers: { Authorization: `Bearer ${storedToken}` } })
 			.then(res => {
-				//console.log('user Id: ', res.data);
 				setUserId(res.data)
 				setNotification(res.data.notificationState)
 			})
@@ -35,7 +31,7 @@ export default function Navbar() {
 				console.log(err)
 			})
 	}
-	
+
 
 	const burgerMenu = <HiMenuAlt3 class='burgerMenu'
 		size='40px' color='black'
@@ -60,9 +56,7 @@ export default function Navbar() {
 
 	useEffect(() => {
 		socket?.on('getNotification', () => {
-			// console.log('getting Notification', notification);
 			setNotification(true)
-			// console.log('getting Notification 2', notification);
 		})
 	}, [socket])
 
@@ -75,7 +69,6 @@ export default function Navbar() {
 			{isLoggedIn &&
 				(
 					<>
-
 						{navOpen ? closeMenu : burgerMenu}
 						{navOpen &&
 							<>
@@ -90,11 +83,11 @@ export default function Navbar() {
 									<img class='logo2' src={splitify_logo} alt='logo' />
 									<ul>
 										<Link to='/'>
-											<li onClick={() => { 
-												setNavOpen(!navOpen); 
-												setOpen(false) 
+											<li onClick={() => {
+												setNavOpen(!navOpen);
+												setOpen(false)
 												setNotificationStateFalse()
-												}}>Home</li>
+											}}>Home</li>
 										</Link>
 										{notification && <div className='notification'></div>}
 										<Link to={`/account/${userId}`}>

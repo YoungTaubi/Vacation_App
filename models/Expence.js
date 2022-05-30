@@ -14,8 +14,6 @@ const expenceSchema = new Schema({
 	},
 	debitors: [
 		{
-			// type: Schema.Types.ObjectId,
-			// ref: 'User'
 			_id:
 				{
 					type: Schema.Types.ObjectId,
