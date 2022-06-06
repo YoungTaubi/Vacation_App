@@ -78,7 +78,6 @@ export default function AddExpence(props) {
 			for (let [key, value] of allMultipliers) {
 				if (debitor._id === key) {
 					let result = procentage * Number(value)
-					debitor.debitorDebt = procentage * Number(value)
 					debitorsUpd.push({ ...debitor, debitorDebt: result, markedAsPaied: false })
 				}
 			}

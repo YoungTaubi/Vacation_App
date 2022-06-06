@@ -152,7 +152,7 @@ router.get('/:id/users-creditAndDebt', (req, res, next) => {
         .catch(err => next(err))
 });
 
-// update marked as paied
+// create settlement
 router.post('/:id/settlement', (req, res, next) => {
     const tripId = req.params.id
     const userId = req.payload._id
@@ -287,6 +287,7 @@ router.post('/:id/settlement', (req, res, next) => {
         .catch(err => next(err))
 });
 
+// update marked as paied
 router.put('/:id/markedAsPaied', (req, res) => {
     const { settlementId, markedAsPaied } = req.body
     Settlement.findByIdAndUpdate(settlementId, {
@@ -298,6 +299,7 @@ router.put('/:id/markedAsPaied', (req, res) => {
         .catch(err => next(err))
 })
 
+// update marked as received
 router.put('/:id/markedAsReceived', (req, res) => {
     const { settlementId, markedAsReceived } = req.body
     Settlement.findByIdAndUpdate(settlementId, {
